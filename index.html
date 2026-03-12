@@ -262,12 +262,64 @@
       font-weight:650;
     }
 
+    /* Boutons Vérité / Action */
+/* Boutons Vérité / Action : fond + bordure + TEXTE */
+    .btn.truth-btn{
+      color: #4dabff; /* bleu */
+      border-color: rgba(77,171,255,.35);
+      background: rgba(77,171,255,.10);
+    }
+
+    .btn.action-btn{
+      color: #ff4d6d; /* rouge */
+      border-color: rgba(255,77,109,.35);
+      background: rgba(255,77,109,.10);
+    }
+
+    .timer{
+      margin-top: 22px;
+      padding: 12px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      border-radius: 18px;
+    }
+
+    .timer-display{
+      text-align:center;
+      font-size: 26px;
+      font-weight: 850;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .timer-controls{
+      display:flex;
+      gap:10px;
+    }
+    .timer-controls .btn{ flex:1; }
+
     .punish{
       border-top:1px solid var(--stroke);
       padding-top:12px;
       margin-top:12px;
-      color:var(--muted);
+      color: #ff4d6d;
+      font-weight: 750;
     }
+
+    #whoChip{
+      color: #ffd166; /* jaune */
+      font-weight: 750;
+    }
+
+    #currentPlayerName{
+      color: #ffd166; /* jaune */
+    }
+
+    /* Couleurs du tag en haut du défi */
+    #promptType.truth   { color: #4dabff; border-color: rgba(77,171,255,.35); background: rgba(77,171,255,.10); }
+    #promptType.action  { color: #ff4d6d; border-color: rgba(255,77,109,.35); background: rgba(255,77,109,.10); }
+    #promptType.community { color: #ffd166; border-color: rgba(255,209,102,.35); background: rgba(255,209,102,.10); }
 
     .nav{
       display:flex;
@@ -358,8 +410,8 @@
           <div class="muted">Choisis :</div>
 
           <div class="choice-grid">
-            <button class="btn" id="truthBtn">🗣️ Vérité</button>
-            <button class="btn" id="actionBtn">🎯 Action</button>
+            <button class="btn truth-btn" id="truthBtn">🗣️ Vérité</button>
+            <button class="btn action-btn" id="actionBtn">🎯 Action</button>  
           </div>
 
           <div class="divider"></div>
@@ -392,6 +444,14 @@
           <div class="nav">
             <button class="btn" id="nextTurnBtn">Tour suivant →</button>
           </div>
+                  <div class="timer">
+          <div class="timer-display" id="timerDisplay">00:00</div>
+          <div class="timer-controls">
+            <button class="btn primary" id="timerStartBtn">▶ Démarrer</button>
+            <button class="btn danger" id="timerStopBtn">⏸ Stop</button>
+            <button class="btn" id="timerResetBtn">↺ Reset</button>
+          </div>
+        </div>
         </div>
       </div>
 
@@ -410,7 +470,7 @@
         truths: [
           { text: "Quelle est la chose la plus random que tu adores ?", punish: "1 gorgée obligatoire" },
           { text: "Quel est ton plus grand ‘green flag’ chez quelqu’un ?", punish: "1 gorgée obligatoire" },
-          { text: "Quel est ton plus grand red flag’ chez quelqu’un ?", punish: "1 gorgée obligatoire" },
+          { text: "Quel est ton plus grand 'red flag’ chez quelqu’un ?", punish: "1 gorgée obligatoire" },
           { text: "Si tu pouvais apprendre un talent instantanément, ce serait quoi ?", punish: "1 gorgée obligatoire" },
           { text: "Tu préfères être hyper matinal·e ou hyper nocturne ?", punish: "1 gorgée obligatoire" },
           { text: "Sur une échelle 1–10, quel est ton niveau de sobriété ? (1 = sobre et 10 = le max que tu pourrais boire)", punish: "1 gorgée obligatoire" },
@@ -423,20 +483,21 @@
           { text: "Combien de tatouages as-tu ?", punish: "1 gorgée obligatoire" },
           { text: "Dans quoi as-tu dépensé le plus jusqu'ici ?", punish: "1 gorgée obligatoire" },
           { text: "Quel est ton film préféré ?", punish: "1 gorgée obligatoire" },
+          { text: "As-tu déjà fumé du tabac ?", punish: "1 gorgée obligatoire" },
           { text: "Quelle partie de ton corps préfères-tu ?", punish: "1 gorgée obligatoire" },
           { text: "Aimes-tu les films d'horreur ? Si oui quel est ton film d'horreur préféré ?", punish: "1 gorgée obligatoire" },
           { text: "Où penses-tu que tu seras dans 5 ans ?", punish: "1 gorgée obligatoire" },
           { text: "As-tu déjà triché à un examen ?", punish: "1 gorgée obligatoire" },
           { text: "As-tu déjà insulté quelqu'un en face ?", punish: "1 gorgée obligatoire" },
           { text: "As-tu déjà perdu ton téléphone sans jamais le retrouver ?", punish: "1 gorgée obligatoire" },
-          { text: "T'es-tu déjà fait voler quelque chose ?", punish: "1 gorgée obligatoire" },
+          { text: "T'es-tu déjà fait voler quelque chose ? Si oui, quoi ?", punish: "1 gorgée obligatoire" },
           { text: "Si tu pouvais faire n'importe quel métier, lequel ferais-tu ?", punish: "1 gorgée obligatoire" },
           { text: "Quelle est ta matière favorite en cours ?", punish: "1 gorgée obligatoire" },
           { text: "Quelle est la matière que tu aimes le moins en cours ?", punish: "1 gorgée obligatoire" },
           { text: "Quel est ton livre préféré ?", punish: "1 gorgée obligatoire" },
           { text: "Est-ce que tu crois aux énergies spirituelles ?", punish: "1 gorgée obligatoire" },
           { text: "Combien de temps passes-tu sur Tiktok par jour ?", punish: "1 gorgée obligatoire" },
-          { text: "Est-ce que tu as des phobies ?", punish: "1 gorgée obligatoire" },
+          { text: "Est-ce que tu as des phobies ? Si oui, lesquelles ?", punish: "1 gorgée obligatoire" },
           { text: "Dis quelque chose que tu admires chez {{other}}.", punish: "1 gorgée obligatoire" },
           { text: "Quel est le dernier film que tu as vu ?", punish: "1 gorgée obligatoire" },
           { text: "Quel est le dernier film d'animation que tu as vu ?", punish: "1 gorgée obligatoire" },
@@ -467,7 +528,7 @@
           { text: "As-tu déjà fait du parapente ? Sinon, voudrais-tu en faire ?", punish: "1 gorgée obligatoire" },
           { text: "As-tu déjà fait du speed dating ? Sinon, voudrais-tu en faire ?", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu que les réseaux sociaux devraient être interdits aux moins de 16 ans ?", punish: "1 gorgée obligatoire" },
-          { text: "Penses-tu que la liberté d'expression doit inclure le droite d'offenser ?", punish: "1 gorgée obligatoire" },
+          { text: "Penses-tu que la liberté d'expression doit inclure le droit d'offenser ?", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu que le système éducatif actuel où les étudiants sont notés est un bon système ?", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu que la méritocratie existe vraiment, ou c'est surtout un mythe social ?", punish: "1 gorgée obligatoire" },
           { text: "Faudrait-il légaliser le cannabis ?", punish: "1 gorgée obligatoire" },
@@ -500,7 +561,10 @@
           { text: "As-tu un compte sur une application de rencontre ? Est-il actif ?", punish: "1 gorgée obligatoire" },
           { text: "As-tu déjà fait du saut à l'élastique ? Sinon, voudrais-tu en faire ?", punish: "1 gorgée obligatoire" },
           { text: "As-tu déjà été arrêté par la police ?", punish: "1 gorgée obligatoire" },
+          { text: "Quel aspect chez quelqu’un te fait tout de suite apprécier la personne ?", punish: "1 gorgée obligatoire" },
+          { text: "Quelle est une opinion sur toi que les gens ont souvent au début et qui est fausse ?", punish: "1 gorgée obligatoire" },
           { text: "As-tu déjà été ivre pendant plus de 10h ?", punish: "1 gorgée obligatoire" },
+          { text: "Quelle qualité chez toi est sous-cotée par les autres ?", punish: "1 gorgée obligatoire" },
           { text: "Es-tu déjà allé.e en Espagne ? Sinon, aimerais-tu y aller ?", punish: "1 gorgée obligatoire" },
           { text: "Es-tu déjà allé.e aux USA ? Sinon, aimerais-tu y aller ?", punish: "1 gorgée obligatoire" },
           { text: "Es-tu déjà allé.e au Japon ? Sinon, aimerais-tu y aller ?", punish: "1 gorgée obligatoire" },
@@ -517,7 +581,7 @@
           { text: "Quelle est ton orientation sexuelle ?", punish: "1 gorgée obligatoire" },
           { text: "Est-ce que tu as une phobie ?", punish: "1 gorgée obligatoire" },
           { text: "Quels sont tes types de jeux vidéos préférés ?", punish: "1 gorgée obligatoire" },
-          { text: "As-tu déjà été illégal ?", punish: "1 gorgée obligatoire" },
+          { text: "As-tu déjà été illégal ? Si oui, en faisant quoi ?", punish: "1 gorgée obligatoire" },
           { text: "Quelle est ta musique préférée ?", punish: "1 gorgée obligatoire" },
           { text: "Cite un film que tu aimes et un que tu n'aimes pas.", punish: "1 gorgée obligatoire" },
           { text: "As-tu déjà porté des talons hauts ?", punish: "1 gorgée obligatoire" },
@@ -542,7 +606,7 @@
           { text: "Ferme les yeux jusqu'au prochain tour.", punish: "2 gorgées obligatoires" },
           { text: "{{other}} doit écrire quelque chose sur un bout de papier et le mettre dans ta poche. Tu ne pourras le lire qu'à la fin de la partie. ", punish: "2 gorgées obligatoires" },
           { text: "Prends un glaçon dans la bouche que tu dois garder jusqu'à ce qu'il fonde entièrement.", punish: "2 gorgées obligatoires" },
-          { text: "Montre-nous tes 3 prochaines vidéos sur ton feed tiktok.", punish: "2 gorgées obligatoires" },
+          { text: "Montre-nous tes 3 prochaines vidéos sur ton feed tiktok (ou instagram).", punish: "2 gorgées obligatoires" },
           { text: "Mange une gousse d'ail.", punish: "2 gorgées obligatoires" },
           { text: "Prends le premier truc random que tu trouves et porte le pendant 2 tours.", punish: "2 gorgées obligatoires" },
           { text: "Lire le dernier message intéressant de ta messagerie préférée avec une voix de narrateur de documentaire.", punish: "2 gorgées obligatoires" },
@@ -567,45 +631,48 @@
           { text: "Mélange les boissons de tout le monde et bois le.", punish: "3 shots" },
         ],
         community: [
-          { text: "À tour de rôle, dites votre acteur/actrice favori·te.", punish: "2 gorgée si pas d'idées" },
+          { text: "À tour de rôle, dites votre acteur/actrice favori·e.", punish: "2 gorgée si pas d'idées" },
           { text: "Chacun donne un fun fact sur lui/elle.", punish: "2 gorgées si pas d'idées" },
           { text: "Chacun son tour doit complimenter la personne à sa droite. Si la personne ne la connaît pas, inventez.", punish: "2 gorgées si pas d'idées" },
           { text: "Chacun son tour doit proposer un animal totem à la personne à sa gauche.", punish: "2 gorgée si pas d'idées" },
-          { text: "Qui est le plus susceptible ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus alcoolique ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus meilleur cuisinier ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de mourir tôt ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus drôle ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus intelligent ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus extraverti ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus introverti ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus de gauche ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus bavard ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui va se marier en premier ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus sérieux.se ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus généreux ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus riche ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus franc.he ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus jaloux ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus orgueilleux ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus pervert ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus désorganisé ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus autoritaire ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus pure ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus économe ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui a les meilleurs goûts vestimentaires ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus provocateur.trice ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui se plaint le plus ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'être réveillé à 4h du matin ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de faire du sport toute la journée ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'arriver en retard à un rdv ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de passer sa journée sur son téléphone ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de se créer une fanfiction dans sa tête ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'avoir le plus de jeux sur steam ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de conduire le mieux une voiture ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de participer à une grève ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de de préparer un gâteau pour un collègue ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de revoir le même fiction plusieurs fois ?", punish: "Le perdant boit 1 shot" },
+          { text: "Qui est le plus susceptible ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus alcoolique ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus meilleur cuisinier ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de mourir tôt ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus drôle ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus intelligent ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus extraverti ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus introverti ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus de gauche ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus bavard ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui va se marier en premier ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus sérieux.se ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus généreux ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus riche ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus franc.he ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus jaloux ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus orgueilleux ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus pervert ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus désorganisé ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus autoritaire ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus responsable ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus pure ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus économe ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui a les meilleurs goûts vestimentaires ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus provocateur.trice ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui se plaint le plus ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'être réveillé à 4h du matin ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de faire du sport toute la journée ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'arriver en retard à un rdv ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de passer sa journée sur son téléphone ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de se créer une fanfiction dans sa tête ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'avoir le plus de jeux sur steam ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de conduire le mieux une voiture ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de participer à une grève ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de de préparer un gâteau pour un collègue ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'abîmer ses habits en faisant une lessive ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de binge watch une série ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de revoir le même fiction plusieurs fois ?", punish: "Le perdant boit 3 gorgées" },
           { text: "Tout le monde ferme les yeux, tourne sa tête vers quelqu'un, et les ouvre.", punish: "2 gorgée chacun si deux personnes se regardent" },
           { text: "Pouces : Pouce en haut pour la montagne, pouce en bas pour la plage.", punish: "2 gorgées pour les minoritaires" },
           { text: "Pouces : Pouce en haut pour les films, pouce en bas pour les séries.", punish: "2 gorgées pour les minoritaires" },
@@ -623,39 +690,48 @@
           { text: "Pendant les deux prochains tours, interdiction de dire 'oui' ou 'non'.", punish: "3 gorgées pour le perdant" },
           { text: "Pendant les deux prochains tours, interdiction de dire 'gorgées'.", punish: "3 gorgées pour le perdant" },
           { text: "Pendant les deux prochains tours, interdiction de dire 'Boire' et ses conjugaisons.", punish: "3 gorgées pour le perdant" },
-          { text: "Pouces : Pouce en haut pour la Android, pouce en bas pour iOS.", punish: "2 gorgées pour les minoritaires" },
+          { text: "Pouces : Pouce en haut pour Android, pouce en bas pour iOS.", punish: "2 gorgées pour les minoritaires" },
           { text: "Pouces : Pouce en haut pour smash la personne à sa droite s'iel était consentant.e, pouce en bas pour pass.", punish: "2 gorgées pour les minoritaires" },
           { text: "Pouces : Pouce en haut pour le coca, pouce en bas pour l'eau.", punish: "2 gorgées pour les minoritaires" },
           { text: "Pouces : Pouce en haut pour Polymanga, pouce en bas pour Japan Impact.", punish: "2 gorgées pour les minoritaires" },
           { text: "Pouces : Pouce en haut pour le Valais, pouce en bas pour Vaud.", punish: "2 gorgées pour les minoritaires" },
-          { text: "Pouces : Pouce en haut ou pouce en bas ?", punish: "1 gorgées par personne qui a répondu la même chose que vous" },
+          { text: "Pouces : Pouce en haut ou pouce en bas ?", punish: "1 gorgée par personne qui a répondu la même chose que vous" },
 
-  ]
+    ]
       },
 
       normal: {
         label: "Normal",
         truths: [
           { text: "Quel est ton pire ‘hot take’ (opinion impopulaire) en terme de film ?", punish: "2 gorgées" },
+          { text: "As-tu déjà fumé du tabac ?", punish: "1 gorgée obligatoire" },
           { text: "Quelle habitude chez toi te saoule le plus ?", punish: "2 gorgées" },
           { text: "Quel est le problème de santé le plus grave que tu aies eu ?", punish: "2 gorgées" },
-          { text: "Qui dans la pièce survivrait le mieux à une apocalypse ?", punish: "2 gorgées" },
           { text: "Quel est ton ‘type’ en 3 mots ?", punish: "2 gorgées" },
-          { text: "Sur une échelle 1–10, quel est ton niveau de sobriété ? (1 = sobre et 10 = le max que tu pourrais boire)", punish: "Bois ce nombre en gorgées" },
+          { text: "Sur une échelle 1–10, quel est ton niveau de sobriété ? (1 = le max que tu pourrais boire et 10 = sobre)", punish: "Bois ce nombre en gorgées" },
           { text: "S'il ne vous restait plus qu'une semaine à vivre et que vous deviez choisir quelqu'un dans cette salle avec qui rester, qui serait-ce ?", punish: "2 gorgées" },
-          { text: "Dites une chose négative et une chose positive sur {{other}}", punish: "2 gorgées" },
+          { text: "Dites une chose négative, puis une chose positive sur {{other}}", punish: "2 gorgées" },
           { text: "Avez-vous déjà envoyé un message à la mauvaise personne ?", punish: "1 gorgée obligatoire" },
           { text: "Quand était la dernière fois que tu as rompu avec quelqu'un, et pour quelle raison ?", punish: "2 gorgées" },
           { text: "De quoi est-il le plus probable que tu décèdes ?", punish: "1 gorgée obligatoire" },
           { text: "Quelle est la chose la plus gênante que tu as fait en publique ?", punish: "2 gorgées" },
           { text: "As-tu déjà vomi à l'extérieur ?", punish: "1 gorgée obligatoire" },
+          { text: "Si tu pouvais être invisible pendant 1 jour, que ferais-tu ?", punish: "1 gorgée obligatoire" },
           { text: "Qui serait le.a survivant.e dans une apocalypse Zombie et pourquoi ?", punish: "2 gorgées" },
           { text: "Quelle est ta dernière discussion avec chatgpt ?", punish: "2 gorgées" },
           { text: "Penses-tu que tu pourrais vivre en colocation avec {{other}} ?", punish: "1 gorgée obligatoire" },
           { text: "Décris comment serait ta vie si tu étais en couple avec {{other}}.", punish: "2 gorgées" },
           { text: "Quelle a été ta première impression de {{other}} ?", punish: "1 gorgée chacun" },
           { text: "As-tu déjà ghosté quelqu'un ?", punish: "1 gorgée obligatoire" },
-          { text: "Est-ce que tu as des photos de personnes nues sur ton téléphone ?", punish: "1 gorgée obligatoire" },
+          { text: "Combien d'argent possèdes-tu sur ton compte bancaire ?", punish: "Bois le premier chiffre de ce nombre en gorgées" },
+          { text: "Si ta vibe actuelle était un lieu, ce serait quoi ?", punish: "2 gorgées" },
+          { text: "Si ta vibe actuelle était une couleur, ce serait quoi ?", punish: "2 gorgées" },
+          { text: "Si ta vibe actuelle était un animal, ce serait quoi ?", punish: "2 gorgées" },
+          { text: "Si ta vibe actuelle était un film, ce serait quoi ?", punish: "2 gorgées" },
+          { text: "Si ta vibe actuelle était un jeu vidéo, ce serait quoi ?", punish: "2 gorgées" },
+          { text: "Quelle qualité chez toi est sous-cotée par les autres ?", punish: "1 gorgée obligatoire" },
+          { text: "Est-ce que tu as des photos d'inconnus nus sur ton téléphone ?", punish: "1 gorgée obligatoire" },
+          { text: "Est-ce que tu as des photos de personnes nues que tu connais personnellement sur ton téléphone ?", punish: "1 gorgée obligatoire" },
           { text: "As-tu un compte sur une application de rencontre ? Est-il actif ?", punish: "1 gorgée obligatoire" },
           { text: "As-tu déjà insulté quelqu'un en face ?", punish: "1 gorgée si c'est la famille, 2 sinon" },
           { text: "As-tu déjà fantasmé (désir sexuel ou romantique) sur quelqu'un dans cette pièce ?", punish: "2 gorgées par personne" },
@@ -669,15 +745,15 @@
           { text: "As-tu déjà participé à un barathon ?", punish: "1 gorgée obligatoire" },
           { text: "As-tu déjà dormi dans les toilettes ?", punish: "1 gorgée obligatoire" },
           { text: "Quelle est la dernière chose sur laquelle tu t'es masturbé.e ?", punish: "2 gorgées" },
-          { text: "As-tu déjà participé à un strip poker ou n'importe quel autre jeu ?", punish: "1 gorgée obligatoire" },
-          { text: "Combien de personnes as-tu déjà embrassé sur la bouche ?", punish: "2 gorgées" },
-          { text: "Quelle est ta dernière discussion avec chatgpt contenant le mot sexe ?", punish: "2 gorgées" },
+          { text: "As-tu déjà participé à un strip poker ou n'importe quel autre jeu du même genre ?", punish: "1 gorgée obligatoire" },
+          { text: "Combien de personnes as-tu déjà embrassé sur la bouche (à peu près) ?", punish: "2 gorgées" },
+          { text: "Quelle est ta dernière discussion avec chatgpt contenant le mot 'sexe' ?", punish: "2 gorgées" },
           { text: "Est-ce que quelqu'un t'a déjà vu nu.e par accident ?", punish: "2 gorgées" },
-          { text: "Où te situes-tu sur le spectre de la bisexualité ?", punish: "1 gorgée obligatoire" },
+          { text: "Où te situes-tu sur le spectre de la bisexualité (0 étant hétérosexuel et 100 étant homosexuel) ?", punish: "1 gorgée obligatoire" },
           { text: "Est-ce que tu aimes donner du sexe oral ?", punish: "1 gorgée obligatoire" },
           { text: "Est-ce que tu as déjà pleuré pendant un rapport sexuel ?", punish: "1 gorgée obligatoire" },
           { text: "Pourrais-tu sortir avec quelqu'un de plus petit que toi ?", punish: "1 gorgée obligatoire" },
-          { text: "Est-ce que tu aimes être vu.e nu.e ?", punish: "2 gorgées" },
+          { text: "Est-ce que tu aimes être vu.e nu.e en général ?", punish: "2 gorgées" },
           { text: "Penses-tu que l'on peut être neutre dans un débat moral ?", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu que c'est immoral d'avoir des enfants dans un monde en crise écologique ?", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu que le bonheur individuel passe avant le bonheur collectif ?", punish: "1 gorgée obligatoire" },
@@ -690,20 +766,21 @@
           { text: "Penses-tu que les algorithmes de recommandation devraient être transparents par la loi ?", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu que l'anonymat en ligne devrait être un droit fondamental ?", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu qu'il faudrait limiter la liberté de consommer pour sauver l'environnement ?", punish: "1 gorgée obligatoire" },
-          { text: "Penses-tu que l'Etat devrait avoir le droit d'imposer des choix de santé (vaccins, sucre, alcool) ?", punish: "1 gorgée obligatoire" },
+          { text: "Penses-tu que l'Etat devrait avoir le droit d'imposer (restreindre) des choix de santé (vaccins, sucre, alcool) ?", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu qu'on peut justifier le mensonge si c'est pour le bien ?", punish: "1 gorgée obligatoire" },
-          { text: "Penses-tu que le pardon a une limite ?", punish: "1 gorgée obligatoire" },
+          { text: "Penses-tu que ton pardon accordé à quelqu'un a une limite ? Si oui, quel est le point de basculement ?", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu qu'il est acceptable de reprocher à qqun ses propos du passé ?", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu que la justice devrait viser l'égalité ou l'équité ?", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu que la religion peut rendre moral ?", punish: "1 gorgée obligatoire" },
-          { text: "Penses-tu que la science devrait s'autocensurer ?", punish: "1 gorgée obligatoire" },
+          { text: "Es-tu déjà allé.e dans un sex shop ?", punish: "2 gorgées obligatoires" },
+          { text: "Penses-tu que l'expérimentation animale sur de petits animaux est acceptable si c'est pour le bien commun et faire avancer la science ? Penses-tu qu'il y a des alternatives ?", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu que l'accès internet devrait être un droit humain ?", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu qu'il faudrait interdire les publicités visant les enfants (jouets, sucre, fast-food) ?", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu que l'on devrait pouvoir vendre ses organes ? (De façon encadrée)", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu que la désobéissance civile est légitime quand la loi est injuste ?", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu que les amendes devraient être proportionnelles au revenu ?", punish: "1 gorgée obligatoire" },
-          { text: "Penses-tu que les médias devraient avoir une obligation morale de neutralité ou de vérité, même si subjective ?", punish: "1 gorgée obligatoire" },
-          { text: "Penses-tu qu'un journaliste a le droit de publier une information vraie si elle met des vies en danger ?", punish: "1 gorgée obligatoire" },
+          { text: "Penses-tu que les médias devraient avoir une obligation morale de neutralité, même si subjective ?", punish: "1 gorgée obligatoire" },
+          { text: "Que penses-tu des médias en général ?", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu que les débats publics devraient exiger une preuve minimale ? (fact-check obligatoire)", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu qu'il faudrait rendre l'éducation aux médias obligatoires dès la primaire ?", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu qu'il faudrait rendre l'éducation des genres obligatoires dès la primaire ?", punish: "1 gorgée obligatoire" },
@@ -712,14 +789,15 @@
           { text: "Penses-tu qu'il faut limiter le tourisme de masse, même si ça ruine les économies locales ?", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu qu'il faudrait taxer fortement la viande et les produits très polluants ?", punish: "1 gorgée obligatoire" },
           { text: "Penses-tu que les écogestes individuels sont utiles ou surtout un écran de fumée ?", punish: "1 gorgée obligatoire" },
-          { text: "Penses-tu que c'est moral de prendre l'avion pour des vacances ?", punish: "1 gorgée obligatoire" },
+          { text: "Penses-tu que prendre l'avion pour des vacances est toujours immoral ?", punish: "1 gorgée obligatoire" },
           { text: "Quelle est la limite la plus basse que tu refuses de franchir sexuellement avec un partenaire ?", punish: "2 gorgée" },
           { text: "Cite un fantasme que tu penses avoir dans la fiction, mais que tu n'aurais pas en vrai.", punish: "2 gorgée" },
-          { text: "As-tu déjà embrassé quelqu'un d'autre alors que tu étais en couple ?", punish: "1 gorgées obligatoire" },
+          { text: "As-tu déjà embrassé quelqu'un d'autre alors que tu étais en couple ?", punish: "1 gorgée obligatoire" },
           { text: "Si tu devais mettre quelqu'un dans cette pièce en couple avec {{other}}, qui serait-ce ? Les partenaires ne comptent pas.", punish: "2 gorgées obligatoires pour chacun des 3" },
           { text: "Si votre partenaire vous proposait de faire un plan à 3, quelle serait votre réaction ?", punish: "1 gorgée obligatoire" },
           { text: "Si votre partenaire vous proposait le couple libre, quelle serait votre réaction ?", punish: "1 gorgée obligatoire" },
           { text: "Si votre partenaire vous proposait un doigt dans le cul pendant un rapport, quelle serait votre réaction ?", punish: "1 gorgée obligatoire" },
+          { text: "Si votre partenaire vous demandait un doigt dans le cul pendant un rapport, quelle serait votre réaction ?", punish: "1 gorgée obligatoire" },
           { text: "Si votre partenaire vous demandait pour que vous lui crachiez dans la bouche, quelle serait votre réaction ?", punish: "1 gorgée obligatoire" },
           { text: "Si votre partenaire vous demandait pour une douche dorée, quelle serait votre réaction ?", punish: "1 gorgée obligatoire" },
           { text: "Pourriez-vous sortir avec un.e Furry ?", punish: "1 gorgée obligatoire" },
@@ -742,6 +820,8 @@
           { text: "Pourriez-vous avoir un rapport sexuel avec quelqu'un de 10 ans de moins que vous ?", punish: "1 gorgée obligatoire" },
           { text: "Pourriez-vous avoir un rapport sexuel avec quelqu'un de 30 ans de plus que vous ?", punish: "1 gorgée obligatoire" },
           { text: "Avez-vous déjà fait un nude (photo) ?", punish: "1 gorgée obligatoire" },
+          { text: "Quelle est la chose avec laquelle tu as le plus de mal dans une relation sentimentale ?", punish: "2 gorgées obligatoires" },
+          { text: "Quelle est la chose avec laquelle tu as le plus de mal dans une relation amicale ?", punish: "2 gorgées obligatoires" },
           { text: "Quel est votre body count ?", punish: "2 gorgées" },
           { text: "As-tu déjà eu un rapport sexuel que tu as regretté ?", punish: "1 gorgée obligatoire" },
           { text: "Est-ce que tu aurais un rapport sexuel avec {{other}} pour 100 francs ?", punish: "1 gorgée obligatoire" },
@@ -762,9 +842,11 @@
           { text: "Vous êtes-vous déjà masturbé dans une voiture ?", punish: "1 gorgée obligatoire" },
           { text: "Quel est ton plus gros turn-on non explicite chez qqun ?", punish: "2 gorgées" },
           { text: "Vous êtes-vous déjà masturbé en public ?", punish: "1 gorgée obligatoire" },
-          { text: "As-tu déjà pris de la drogue ?", punish: "1 gorgées par drogue différente testée" },
+          { text: "Quelle question aimerais-tu qu'on te pose ?", punish: "2 gorgées" },
+          { text: "As-tu déjà pris de la drogue ?", punish: "1 gorgée par drogue différente testée" },
           { text: "Vous êtes-vous déjà masturbé devant un animal ?", punish: "1 gorgée obligatoire" },
-          { text: "As-tu déjà utilisé un plug anal, et sur toi ou sur quelqu'un d'autre ?", punish: "2 gorgées" },
+          { text: "As-tu déjà utilisé un plug anal sur quelqu'un d'autre ?", punish: "2 gorgées" },
+          { text: "As-tu déjà utilisé un plug anal sur toi ?", punish: "2 gorgées" },
           { text: "Vous êtes-vous déjà masturbé dans la cuisine ?", punish: "1 gorgée obligatoire" },
           { text: "Vous êtes-vous déjà masturbé dans les toilettes ?", punish: "1 gorgée obligatoire" },
           { text: "Vous êtes-vous déjà masturbé dans un avion ?", punish: "1 gorgée obligatoire" },
@@ -773,8 +855,8 @@
           { text: "Quel est ton plus gros red flag ?", punish: "2 gorgées" },
           { text: "Quel est ton plus gros green flag ?", punish: "2 gorgées" },
           { text: "Pourrais-tu avoir un rapport sexuel dans une forêt ?", punish: "1 gorgée obligatoire" },
-          { text: "Vous êtes-vous déjà masturbé sur quelqu'un dans cette pièce ?", punish: "1 gorgée obligatoire" },
-          { text: "Vous êtes-vous déjà masturbé sur quelqu'un dans cette pièce ? Si oui, qui ?", punish: "2 gorgées" },
+          { text: "Vous êtes-vous déjà masturbé en pensant à quelqu'un dans cette pièce ?", punish: "1 gorgée obligatoire" },
+          { text: "Vous êtes-vous déjà masturbé en pensant à quelqu'un dans cette pièce ? Si oui, qui ?", punish: "2 gorgées" },
           { text: "Vous êtes-vous déjà fait surprendre en train de vous masturber ? Si oui par qui ?", punish: "2 gorgées" },
           { text: "Vous êtes-vous déjà fait surprendre en train d'avoir un rapport sexuel ? Si oui par qui ?", punish: "2 gorgées" },
           { text: "Vous êtes-vous déjà masturbé en ayant vos règles ou avez vous déjà été impliqué dans un rapport qui les incluait ?", punish: "2 gorgées" },
@@ -794,8 +876,14 @@
           { text: "Imite quelqu’un dans la pièce comme si c'est lui qui parlait, celui qui trouve distribue 3 gorgées.", punish: "2 gorgées" },
           { text: "Donne un surnom à deux personnes (valable 10 minutes).", punish: "à chaque fois que quelqu'un se trompe : 1 gorgée" },
           { text: "Fais un compliment à {{other}}", punish: "2 gorgées" },
+          { text: "Essaie de faire tenir une cuillère sur ton nez pendant 10 secondes", punish: "2 gorgées si tu réussis, 4 sinon" },
+          { text: "Essaie de tenir 30 secondes sans cligner des yeux", punish: "Distribue 4 gorgées si tu réussis, bois les sinon" },
+          { text: "Les autres joueurs décident d'une action et d'une position que tu vas devoir trouver. Les autres joueurs te disent chaud ou froid jusqu'à ce que tu exécutes parfaitement la position et l'action.", punish: "Distribue 5 gorgées si tu réussis à trouver dans les 5 minutes, bois les sinon" },
+          { text: "Les autres joueurs décident d'une action et d'une position que tu vas devoir trouver. Les autres joueurs te disent chaud ou froid jusqu'à ce que tu exécutes parfaitement la position et l'action.", punish: "Distribue 5 gorgées si tu réussis à trouver dans les 5 minutes, bois les sinon" },
+          { text: "Donne un super pouvoir à chaque joueur.", punish: "2 gorgées" },
           { text: "Fais-toi toucher les abdos par {{other}}", punish: "2 gorgées" },
           { text: "Fais-toi toucher les biceps par {{other}}", punish: "2 gorgées" },
+          { text: "Bois un mélange avec du lait et de l'alcool", punish: "3 gorgées" },
           { text: "Laisse {{other}} scroller sans regarder sur ton téléphone et ouvrir une discussion, tu devras envoyer un message à la personne", punish: "2 gorgées" },
           { text: "Cherche le mot sexe dans ton historique internet et lis-nous ce qu'il y a d'écrit.", punish: "2 gorgées" },
           { text: "Cherche le mot sexe dans ta messagerie et lis-nous ce qu'il y a d'écrit.", punish: "2 gorgées" },
@@ -819,13 +907,16 @@
           { text: "Fais un massage crânien à {{other}} pendant 1 tour", punish: "3 gorgées" },
           { text: "Fais un massage crânien à {{other}} pendant 1 tour", punish: "3 gorgées" },
           { text: "Laisse {{other}} te mettre du rouge à lèvres.", punish: "2 gorgées" },
-          { text: "Montre-nous tes 3 prochaines vidéos sur ton feed tiktok.", punish: "2 gorgées" },
+          { text: "Montre-nous tes 3 prochaines vidéos sur ton feed tiktok (ou instagram).", punish: "2 gorgées" },
           { text: "Pendant 1 tour, quand {{other}} boit, tu bois aussi.", punish: "10 gorgées" },
           { text: "Distribue 4 gorgées.", punish: "" },
           { text: "Fais ta meilleure séance d'ASMR à {{other}} pendant 30 secondes. Iel note la performance de 1 à 10, et tu distribues la note en gorgées.", punish: "3 gorgées" },
           { text: "Sans regarder, devine l'heure.", punish: "1 gorgée par tranche de 10 minutes d'erreur" },
           { text: "Parle les 2 prochains tours avec la bouche ouverte.", punish: "4 gorgées" },
           { text: "Prends un bus.", punish: "3 shots" },
+          { text: "Prends un shot.", punish: "4 gorgées" },
+          { text: "De 1 à 10, note comment tu imagines la dominance sexuelle de chaque joueur (1 étant soumis).", punish: "Les joueurs boivent le nombre en gorgées, et toi tu en bois 5" },
+          { text: "Prends un shot.", punish: "4 gorgées" },
           { text: "Prends une petite cuillère de tabasco.", punish: "5 gorgées" },
           { text: "Va sur https://www.motsaleatoires.com/?fs=1&fs2=0&Submit=Nouveau+mot et mime aux autres un mot faisable. Le gagnant distribue 2 gorgées.", punish: "2 gorgées obligatoires" },
           { text: "Va sur https://www.motsaleatoires.com/?fs=1&fs2=0&Submit=Nouveau+mot et mime aux autres un mot faisable. Le gagnant distribue 2 gorgées.", punish: "2 gorgées obligatoires" },
@@ -841,7 +932,8 @@
           { text: "Enlève un vêtement", punish: "2 gorgées" },
           { text: "Fais un massage des épaules à {{other}} pendant 1 tour", punish: "3 gorgées" },
           { text: "Prends un bus", punish: "3 shots" },
-          { text: "Thé ou café ? pense à un objet physique, les autres doivent essayer de le trouver en commençant par ta gauche.", punish: "Celui qui trouve distribue 10 gorgées" },
+          { text: "Thé ou café ? Pense à un objet physique, les autres doivent essayer de le trouver en commençant par ta gauche.", punish: "Celui qui trouve distribue 10 gorgées" },
+          { text: "Thé ou café ? Pense à un objet physique, les autres doivent essayer de le trouver en commençant par ta gauche.", punish: "Celui qui trouve distribue 10 gorgées" },
           { text: "Mélange les boissons de tout le monde et bois le mélange.", punish: "3 shots" },
           { text: "Masse sensuellement {{other}} pendant 5 minutes", punish: "2 gorgées" },
           { text: "Fais-toi verser une boisson dans la bouche par {{other}} pendant que tu es à genoux.", punish: "2 gorgées" },
@@ -854,39 +946,42 @@
           { text: "Trouve 3 points communs entre toi et {{other}}.", punish: "2 gorgées obligatoires" },
           { text: "Ferme les yeux jusqu'au prochain tour.", punish: "2 gorgées obligatoires" },
           { text: "Prends un glaçon dans la bouche que tu dois garder jusqu'à ce qu'il fonde entièrement.", punish: "2 gorgées obligatoires" },
-          { text: "Montre-nous tes 3 prochaines vidéos sur ton feed tiktok.", punish: "2 gorgées obligatoires" },
+          { text: "Montre-nous tes 3 prochaines vidéos sur ton feed tiktok (ou instagram).", punish: "2 gorgées obligatoires" },
           { text: "Bois un verre d'eau.", punish: "Il y en a pas" },
           { text: "Bois un verre d'eau.", punish: "Il y en a pas" },
           { text: "Shot général.", punish: "3 gorgées" },
           { text: "Fais un câlin à {{other}}.", punish: "2 gorgées " },
           { text: "Fais un 'pour combien' à 10 avec chaque personne de cette pièce, l'une après l'autre.", punish: "1 shot à chaque échec" },
           { text: "Fais un câlin à {{other}}.", punish: "2 gorgées pour votre amitié obligatoires pour les deux" },
-          { text: "Fais un câlin pendant 30 secondes à {{other}}.", punish: "2 gorgées pour votre amitié obligatoires pour les deux" },
-          { text: "Fais un câlin pendant 30 secondes à {{other}}.", punish: "2 gorgées pour votre amitié obligatoires pour les deux" },
+          { text: "Fais un câlin intense pendant 20 secondes à {{other}}.", punish: "2 gorgées pour votre amitié obligatoires pour les deux" },
+          { text: "Fais un câlin intense pendant 20 secondes à {{other}}.", punish: "2 gorgées pour votre amitié obligatoires pour les deux" },
+          { text: "Fais un body shot sur {{other}}.", punish: "3 gorgées" },
         ],
         community: [
-          { text: "Films commençant par la lettre A jusqu'à ce que quelqu'un perde.", punish: "Si plus d'idées : 1 shot" },
+          { text: "Films commençant par la lettre A jusqu'à ce que quelqu'un perde.", punish: "Si plus d'idées : 3 gorgées" },
           { text: "Chacun donne un fun fact sur lui/elle.", punish: "1 gorgée" },
           { text: "A tour de rôle, citez le nom de famille de la personne à votre gauche.", punish: "3 gorgée" },
-          { text: "Qui est le plus susceptible de dépenser son salaire dans des vêtements ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de d'offrir le meilleur cadeau pour le Père Noël secret ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de se déguiser pour Halloween ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'apprendre une nouvelle langue ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de répondre à un message rapidement ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'avoir 20 onglets ouverts sur son ordinateur ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus maladroit ?", punish: "Le perdant boit 1 shot" },
+          { text: "Qui est le plus susceptible de dépenser son salaire dans des vêtements ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de d'offrir le meilleur cadeau pour le Père Noël secret ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de se déguiser pour Halloween ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'apprendre une nouvelle langue ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de répondre à un message rapidement ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'avoir 20 onglets ouverts sur son ordinateur ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible ?", punish: "Le perdant boit  3 gorgées" },
+          { text: "Qui est le plus maladroit ?", punish: "Le perdant boit  3 gorgées" },
           { text: "Ceux qui arrivent à lécher leurs tétons distribuent 3 gorgées chacun.", punish: "Ceux qui le prouvent en distribuent 6." },
-          { text: "Qui est le plus susceptible d'avoir peur pendant un film d'horreur ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de faire du saut en parachute ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'être trop honnête ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'appuyer 5 fois sur le bouton rappel de son réveil ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'avoir la relation la plus longue ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de regarder des films d'horreur seul ?", punish: "Le perdant boit 1 shot" },
+          { text: "Qui est le plus susceptible d'avoir peur pendant un film d'horreur ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de faire du saut en parachute ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'être trop honnête ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'appuyer 5 fois sur le bouton rappel de son réveil ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'avoir la relation la plus longue ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de regarder des films d'horreur seul ?", punish: "Le perdant boit 3 gorgées" },
           { text: "Je n'ai jamais pris d'antidépresseurs.", punish: "2 gorgées si tu l'as déjà fait, pour te consoler" },
           { text: "Pouces : Pouce en haut pour la voiture, pouce en bas pour le train.", punish: "2 gorgées pour les minoritaires" },
           { text: "Pouces : Pouce en haut pour la bière, pouce en bas pour le vin.", punish: "2 gorgées pour les minoritaires" },
           { text: "Pouces : Pouce en haut pour les romans, pouce en bas pour les manga.", punish: "2 gorgées pour les minoritaires" },
           { text: "Pouces : Pouce en haut pour Marvel, pouce en bas pour DC.", punish: "2 gorgées pour les minoritaires" },
+          { text: "Tout le monde ferme les yeux, tourne sa tête vers quelqu'un, et les ouvre.", punish: "1 shot chacun si deux personnes se regardent" },
           { text: "Tout le monde ferme les yeux, tourne sa tête vers quelqu'un, et les ouvre.", punish: "1 shot chacun si deux personnes se regardent" },
           { text: "Pouces : Pouce en haut pour la Harry Potter, pouce en bas pour Star wars.", punish: "2 gorgées pour les minoritaires" },
           { text: "Pouces : Pouce en haut pour le rock, pouce en bas pour la pop.", punish: "2 gorgées pour les minoritaires" },
@@ -894,74 +989,77 @@
           { text: "Pouces : Pouce en haut pour les pâtes, pouce en bas pour le riz.", punish: "2 gorgées pour les minoritaires" },
           { text: "Pouces : Pouce en haut pour le thé, pouce en bas pour le café.", punish: "2 gorgées pour les minoritaires" },
           { text: "Pouces : Pouce en haut pour le Japon, pouce en bas pour les Etats-Unis.", punish: "2 gorgées pour les minoritaires" },
-          { text: "Qui est le plus susceptible d'avoir un plan cul ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui aime le plus voyager ?", punish: "Le perdant boit 1 shot" },
-          { text: "Pendant 1 tour, doublez les punitions.", punish: "Le perdant boit 1 shot" },
-          { text: "Qui se masturbe le plus ?", punish: "Le perdant boit 1 shot" },
+          { text: "Qui est le plus susceptible d'avoir un plan cul ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui aime le plus voyager ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Pendant 1 tour, doublez les punitions.", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui se masturbe le plus ?", punish: "Le perdant boit 3 gorgées" },
           { text: "Qui est le plus susceptible de frapper son partenaire ou d'être frappé par son partenaire ?", punish: "4 gorgées si quelqu'un échoue" },
-          { text: "Qui est le plus susceptible de changer d'orientation sexuelle ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de devenir trans ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus coquet.te ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'avoir plein d'animaux de compagnie ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de ne pas oser dire ce qu'il pense ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'avoir un rapport sexuel avec {{other}} ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de voyager seul ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de s'inscrire à un concours de puzzle (seul) ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de répondre 'comme tu veux' ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'avoir un rapport sexuel avec {{other}} ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui aime le moins les conversations sérieuses ?", punish: "Le perdant boit 1 shot" },
+          { text: "Qui est le plus susceptible de changer d'orientation sexuelle ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de devenir trans ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus coquet.te ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'avoir plein d'animaux de compagnie ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de ne pas oser dire ce qu'il pense ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'avoir un rapport sexuel avec {{other}} ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de voyager seul ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de s'inscrire à un concours de puzzle (seul) ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de répondre 'comme tu veux' ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'avoir un rapport sexuel avec {{other}} ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui aime le moins les conversations sérieuses ?", punish: "Le perdant boit 3 gorgées" },
           { text: "Chacun son tour propose une couleur, si c'est la couleur principale du sous-vêtement à {{other}}, la personne qui a deviné distribue 2 gorgées.", punish: "Tout le monde prend un shot en son honneur si personne ne devine" },
-          { text: "Qui est le plus susceptible de prendre un truc au premier degré ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de mettre 40 réveils le matin ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus perfectionniste ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui passe le plus de temps sur son téléphone ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'avoir un rapport sexuel avec {{other}} ?", punish: "Le perdant boit 1 shot" },
-          { text: "Les personnes qui ont un animal de compagnie boivent", punish: "1 gorgée par animal" },
+          { text: "Qui est le plus susceptible de prendre un truc au premier degré ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de mettre 40 réveils le matin ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus perfectionniste ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui passe le plus de temps sur son téléphone ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'avoir un rapport sexuel avec {{other}} ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Les personnes qui ont un animal de compagnie boivent", punish: "1 gorgée par animal (max 10)" },
           { text: "Les personnes dont le prénom est composé d'au moins 5 lettres boivent", punish: "3 gorgées" },
           { text: "Les personnes dont le prénom est composé de moins de 5 lettres boivent", punish: "3 gorgées" },
           { text: "Pendant les deux prochains tours, interdiction de dire 'oui' ou 'non'.", punish: "3 gorgées pour le perdant" },
           { text: "Pendant les deux prochains tours, interdiction de dire 'gorgées'.", punish: "3 gorgées pour le perdant" },
           { text: "Pendant les deux prochains tours, interdiction de dire 'Boire' et ses conjugaisons.", punish: "3 gorgées pour le perdant" },
           { text: "Pendant les deux prochains tours, interdiction de boire de la main dominante.", punish: "4 gorgées si quelqu'un échoue" },
-          { text: "Qui est le moins sociable ?", punish: "Le perdant boit 1 shot" },
-          { text: "Mots en -ouille ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui dort le plus ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus vicieux.se ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui pourrait passer toute sa vie dans sa chambre ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus flemmard.e ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'avoir le plus de partenaires dans sa vie ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus photogénique ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui aime le plus les animaux ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui passe le plus ponctuel ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus pervers ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus de droite ?", punish: "Le perdant boit 1 shot" },
+          { text: "Qui est le moins sociable ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Mots en -ouille ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui dort le plus ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus vicieux.se ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui pourrait passer toute sa vie dans sa chambre ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus flemmard.e ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'avoir le plus de partenaires dans sa vie ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'oublier pourquoi il est entré dans une pièce ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus photogénique ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui aime le plus les animaux ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus ponctuel ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus pervers ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus de droite ?", punish: "Le perdant boit 3 gorgées" },
           { text: "Assieds-toi sur {{other}} pendant 2 tours", punish: "3 gorgées" },
-          { text: "Qui perd le plus souvent des objets ?", punish: "Le perdant boit 1 shot" },
-  ]
+          { text: "Qui perd le plus souvent des objets ?", punish: "Le perdant boit 3 gorgées" },
+    ]
       },
 
       hot: {
         label: "Hot",
         truths: [
-          { text: "As-tu déjà fantasmé (désir sexuel ou romantique) sur quelqu'un dans cette pièce ?", punish: "4 gorgées" },
-          { text: "As-tu déjà fantasmé (désir sexuel ou romantique) sur quelqu'un dans cette pièce ?", punish: "4 gorgées" },
-          { text: "As-tu déjà fantasmé (désir sexuel ou romantique) sur quelqu'un dans cette pièce ?", punish: "4 gorgées" },
+          { text: "As-tu déjà fantasmé (désir sexuel ou romantique) sur quelqu'un dans cette pièce ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà fantasmé (désir sexuel ou romantique) sur quelqu'un dans cette pièce ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà fantasmé (désir sexuel ou romantique) sur quelqu'un dans cette pièce ? Si oui qui ?", punish: "4 gorgées" },
           { text: "Qui est la prochaine personne avec qui tu aimerais avoir une relation sexuelle ?", punish: "2 gorgées" },
-          { text: "As-tu déjà eu plusieurs relations sexuelles avec des personnes différentes dans la même journée ?", punish: "2 gorgées" },
+          { text: "As-tu déjà eu plusieurs relations sexuelles avec des personnes différentes dans la même journée ?", punish: "2 gorgées obligatoires" },
           { text: "Quelle partie du corps t'excite le plus ?", punish: "2 gorgées" },
-          { text: "As-tu déjà participé à un strip poker ou n'importe quel autre jeu ?", punish: "2 gorgées" },
-          { text: "Combien de personnes as-tu déjà embrassé sur la bouche ?", punish: "2 gorgées" },
-          { text: "Quelle est ta dernière discussion avec chatgpt contenant le mot sexe ?", punish: "2 gorgées" },
-          { text: "Est-ce que quelqu'un t'a déjà vu nu.e par accident ?", punish: "2 gorgées" },
-          { text: "Est-ce que tu aimes donner du sexe oral ?", punish: "2 gorgées" },
-          { text: "Est-ce que tu as déjà pleuré pendant un rapport sexuel ?", punish: "2 gorgées" },
-          { text: "As-tu déjà été forcé.e de faire quoi que ce soit au lit ?", punish: "2 gorgées" },
-          { text: "Pourrais-tu sortir avec quelqu'un de plus petit que toi ?", punish: "2 gorgées" },
-          { text: "Est-ce que tu aimes être vu.e nu.e ?", punish: "2 gorgées" },
-          { text: "Tu préfères embrasser avec ou sans la langue ?", punish: "2 gorgées" },
-          { text: "Agenouille-toi devant {{other}}, iel doit te caresser.", punish: "2 gorgées" },
-          { text: "Quelle est la limite la plus basse que tu refuses de franchir sexuellement avec un partenaire ?", punish: "1 gorgées" },
-          { text: "Cite un fantasme que tu penses avoir dans la fiction, mais que tu n'aurais pas en vrai.", punish: "1 gorgées" },
+          { text: "As-tu déjà participé à un strip poker ou n'importe quel autre jeu ?", punish: "2 gorgées obligatoires" },
+          { text: "Combien de personnes as-tu déjà embrassé sur la bouche ?", punish: "2 gorgées par personne, 10 gorgées max" },
+          { text: "Quelle est ta dernière discussion avec chatgpt contenant le mot sexe ?", punish: "3 gorgées" },
+          { text: "Est-ce que quelqu'un t'a déjà vu nu.e par accident ?", punish: "3 gorgées" },
+          { text: "Quel type de tension/flirt te plaît le plus : subtil, drôle, direct ou intense ?", punish: "2 gorgées obligatoires" },
+          { text: "Est-ce que tu aimes donner du sexe oral ?", punish: "2 gorgées obligatoires" },
+          { text: "Est-ce que tu as déjà pleuré pendant un rapport sexuel ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà été forcé.e de faire quoi que ce soit au lit ?", punish: "2 gorgées obligatoires" },
+          { text: "Pourrais-tu sortir avec quelqu'un de plus petit que toi ?", punish: "2 gorgées obligatoires" },
+          { text: "Pourrais-tu sortir avec quelqu'un de non-binaire ?", punish: "2 gorgées obligatoires" },
+          { text: "Est-ce que tu aimes être vu.e nu.e ?", punish: "2 gorgées obligatoires" },
+          { text: "Accepterais-tu que ton partenaire t'introduise un doigt trempé de salive dans ton anus pendant l'acte ?", punish: "2 gorgées obligatoires" },
+          { text: "Tu préfères embrasser avec ou sans la langue ?", punish: "2 gorgées obligatoires" },
+          { text: "Quelle est la limite la plus basse que tu refuses de franchir sexuellement avec un partenaire ?", punish: "1 gorgée" },
+          { text: "Cite un fantasme que tu penses avoir dans la fiction, mais que tu n'aurais pas en vrai.", punish: "1 gorgée" },
           { text: "Fais 5 pompes sur {{other}}.", punish: "2 gorgées" },
           { text: "As-tu déjà embrassé quelqu'un d'autre alors que tu étais en couple ?", punish: "2 gorgées" },
           { text: "Si tu devais mettre quelqu'un dans cette pièce en couple avec {{other}}, qui serait-ce ? Les partenaires ne comptent pas.", punish: "2 gorgées" },
@@ -971,7 +1069,7 @@
           { text: "Si votre partenaire vous demandait pour que vous lui crachiez dans la bouche, quelle serait votre réaction ?", punish: "2 gorgées" },
           { text: "Si votre partenaire vous demandait pour une douche dorée, quelle serait votre réaction ?", punish: "2 gorgées" },
           { text: "Pourriez-vous sortir avec un.e Furry ?", punish: "2 gorgées" },
-          { text: "As-tu déjà pris de la drogue ?", punish: "1 gorgées par drogue différente testée" },
+          { text: "As-tu déjà pris de la drogue ?", punish: "1 gorgée par drogue différente testée" },
           { text: "Avez-vous déjà considéré être naturiste ?", punish: "2 gorgées" },
           { text: "Si tu devais resortir avec un ex, qui serait-ce ? Ton partenaire actuel ne compte pas.", punish: "2 gorgées" },
           { text: "Avez-vous déjà participé à un rapport à distance ?", punish: "2 gorgées" },
@@ -991,131 +1089,136 @@
           { text: "Pourriez-vous avoir un rapport sexuel avec quelqu'un de 60 ans de plus que vous pour 100 francs ?", punish: "2 gorgées" },
           { text: "Pourriez-vous avoir un rapport sexuel avec quelqu'un de 60 ans de plus que vous pour 1000 francs (la personne est aléatoire et consentante) ?", punish: "2 gorgées" },
           { text: "Pourriez-vous avoir un rapport sexuel avec quelqu'un de 60 ans de plus que vous pour 1000 francs (bien entretenu.e) ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà envoyé un nude (photo) ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà reçu un nude (photo) ?", punish: "2 gorgées" },
-          { text: "Quel est votre body count ?", punish: "2 gorgées" },
-          { text: "As-tu déjà payé pour du contenu sexuel ?", punish: "2 gorgées" },
-          { text: "As-tu déjà acheté quelque chose dans un sex shop en physique ?", punish: "2 gorgées" },
-          { text: "Est-ce que tu aurais un rapport sexuel avec {{other}} pour 100 francs ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà fait un nude (vidéo) ?", punish: "2 gorgées" },
-          { text: "Seriez-vous capable de créer et entretenir un only fan ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà remis en question votre orientation sexuelle ?", punish: "2 gorgées" },
+          { text: "Avez-vous déjà envoyé un nude (photo) ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà reçu un nude (photo) ?", punish: "2 gorgées obligatoires" },
+          { text: "Quel est votre body count (Tout acte sexuel) ?", punish: "2 gorgées par body count, max 10 gorgées" },
+          { text: "As-tu déjà payé pour du contenu sexuel ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà acheté quelque chose dans un sex shop en physique ?", punish: "2 gorgées obligatoires" },
+          { text: "Est-ce que tu aurais un rapport sexuel avec {{other}} pour 100 francs s'iel est consentant.e ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà fait un nude (vidéo) ?", punish: "2 gorgées obligatoires" },
+          { text: "Seriez-vous capable de créer et entretenir un only fan ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà remis en question votre orientation sexuelle ?", punish: "2 gorgées obligatoire" },
           { text: "Avez-vous déjà payé pour du contenu ou des services sexuels ? Si oui lesquels ?", punish: "2 gorgées" },
           { text: "Possédez-vous des sextoys ? Si oui lesquels ?", punish: "2 gorgées" },
-          { text: "Pourriez-vous être intéressés par le BDSM ?", punish: "2 gorgées" },
-          { text: "As-tu déjà frappé ou été frappé par ton partenaire ?", punish: "2 gorgées" },
-          { text: "Existe-t-il un monde où tu finis cette soirée en couchant avec quelqu'un ?", punish: "2 gorgées" },
+          { text: "Pourriez-vous être intéressés par le BDSM ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà frappé ou été frappé par ton partenaire ?", punish: "2 gorgées obligatoires" },
+          { text: "Existe-t-il un monde où tu finis cette soirée en couchant avec quelqu'un ?", punish: "2 gorgées obligatoires" },
           { text: "Quand vous êtes-vous masturbé pour la dernière fois ?", punish: "2 gorgées" },
           { text: "Avec qui avez-vous eu votre dernier rapport sexuel et quand ?", punish: "3 gorgées" },
           { text: "Avec qui avez-vous eu votre dernier rapport sexuel et où ?", punish: "3 gorgées" },
           { text: "Quelle taille fait votre appareil sexuel ?", punish: "2 gorgées" },
           { text: "Avez-vous un profil sur des applications de rencontre ? Si oui lesquels ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà été à l'origine d'un rapport anal ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà effectué un cunnilingus ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà effectué une fellation ?", punish: "2 gorgées" },
-          { text: "As-tu déjà eu un rapport sexuel avec les stores ou les rideaux ouverts, en espérant que quelqu'un te voie ?", punish: "1 gorgée" },
-          { text: "Avez-vous déjà reçu une fellation ou un cunnilingus ?", punish: "2 gorgées" },
-          { text: "Avez-vous des kinks que vous n'avez jamais osé avouer ?", punish: "2 gorgées" },
-          { text: "Pourriez-vous avoir un rapport sexuel avec votre voisin de droite ?", punish: "2 gorgées" },
-          { text: "Pourriez-vous avoir un rapport sexuel avec votre voisin de droite ?", punish: "2 gorgées" },
-          { text: "As-tu déjà uriné dans une piscine ?", punish: "2 gorgées" },
-          { text: "T'es-tu déjà masturbé sur un vocal ?", punish: "2 gorgées" },
-          { text: "As-tu déjà uriné sous la douche ?", punish: "2 gorgées" },
-          { text: "Est-ce que ça t'excite d'entendre des personnes avoir un rapport sexuel ?", punish: "2 gorgées" },
-          { text: "Comment réagirais-tu si ton partenaire te disait vouloir essayer un rapport avec une autre personne ?", punish: "2 gorgées" },
-          { text: "As-tu déjà eu un rapport sexuel dans un lieu sacré ou un cimetierre ?", punish: "2 gorgées" },
-          { text: "Pourriez-vous avoir un rapport sexuel avec votre voisin de gauche ?", punish: "2 gorgées" },
-          { text: "Pourriez-vous avoir un rapport sexuel avec votre voisin de gauche ?", punish: "2 gorgées" },
-          { text: "Pourriez-vous avoir un rapport sexuel avec la personne en face de vous ?", punish: "2 gorgées" },
-          { text: "Pourriez-vous avoir un rapport sexuel avec une personne contraire à votre appartenance politique ?", punish: "2 gorgées" },
-          { text: "Pourriez-vous accepter un rapport sexuel contre de l'argent ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà fait du rôle play lors d'une partie de jambes en l'air ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà fait une partie de jambes en l'air avec un rapport de domination ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà fait une partie de jambes en l'air dans une voiture ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà fait une partie de jambes en l'air en public ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà fait une partie de jambes en l'air devant un animal ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà fait une partie de jambes en l'air dans la cuisine ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà fait une partie de jambes en l'air dans les toilettes ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà fait une partie de jambes en l'air dans un avion ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà été attiré par l'inceste ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà été attiré par le CNC (Consensual non-consent) ?", punish: "2 gorgées" },
-          { text: "Vous êtes-vous déjà masturbé dans une voiture ?", punish: "2 gorgées" },
-          { text: "Vous êtes-vous déjà masturbé en public ?", punish: "2 gorgées" },
-          { text: "Vous êtes-vous déjà masturbé devant un animal ?", punish: "2 gorgées" },
-          { text: "As-tu déjà utilisé un plug anal, sur toi ou sur quelqu'un d'autre ?", punish: "2 gorgées" },
-          { text: "Vous êtes-vous déjà masturbé dans la cuisine ?", punish: "2 gorgées" },
-          { text: "Vous êtes-vous déjà masturbé dans les toilettes ?", punish: "2 gorgées" },
-          { text: "Vous êtes-vous déjà masturbé dans un avion ?", punish: "2 gorgées" },
-          { text: "Es-tu déjà allé en publique sans sous-vêtements ?", punish: "2 gorgées" },
-          { text: "Pourrais-tu avoir un rapport sexuel dans une forêt ?", punish: "2 gorgées" },
-          { text: "Vous êtes-vous déjà masturbé sur quelqu'un dans cette pièce ?", punish: "2 gorgées" },
+          { text: "Avez-vous déjà été à l'origine d'un rapport anal ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà effectué un cunnilingus ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà effectué une fellation ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà eu un rapport sexuel avec les stores ou les rideaux ouverts, en espérant que quelqu'un te voie ?", punish: "2 gorgée obligatoires" },
+          { text: "Avez-vous déjà reçu une fellation ou un cunnilingus ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous des kinks que vous n'avez jamais osé avouer ?", punish: "2 gorgées obligatoires" },
+          { text: "Pourriez-vous avoir un rapport sexuel avec votre voisin de droite ?", punish: "2 gorgées obligatoires" },
+          { text: "Pourriez-vous avoir un rapport sexuel avec votre voisin de droite ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà uriné dans une piscine ?", punish: "2 gorgées obligatoires" },
+          { text: "T'es-tu déjà masturbé en vocal ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà uriné sous la douche ?", punish: "2 gorgées obligatoires" },
+          { text: "Est-ce que ça t'excite d'entendre des personnes avoir un rapport sexuel ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà commis un acte sexuel face à un miroir ?", punish: "2 gorgées obligatoires" },
+          { text: "Comment réagirais-tu si ton partenaire te disait vouloir essayer un rapport avec une autre personne ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà eu un rapport sexuel dans un lieu spirituel ?", punish: "2 gorgées obligatoires" },
+          { text: "Pourriez-vous avoir un rapport sexuel avec votre voisin de gauche ?", punish: "2 gorgées obligatoires" },
+          { text: "Pourriez-vous avoir un rapport sexuel avec votre voisin de gauche ?", punish: "2 gorgées obligatoires" },
+          { text: "Pourriez-vous avoir un rapport sexuel avec la personne en face de vous ?", punish: "2 gorgées obligatoires" },
+          { text: "Pourriez-vous avoir un rapport sexuel avec une personne contraire à votre appartenance politique ?", punish: "2 gorgées obligatoires" },
+          { text: "Pourriez-vous accepter un rapport sexuel contre de l'argent ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà fait du rôle play lors d'une partie de jambes en l'air ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà fait une partie de jambes en l'air avec un rapport de domination ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà commis un acte sexuel dans une voiture ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà fait une partie de jambes en l'air dans une voiture ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà fait une partie de jambes en l'air en public ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà fait une partie de jambes en l'air devant un animal ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà commis un acte sexuel devant un animal ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà fait une partie de jambes en l'air dans la cuisine ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà fait une partie de jambes en l'air dans les toilettes ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà commis un acte sexuel dans les toilettes ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà fait une partie de jambes en l'air dans un avion ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà été attiré par l'inceste ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà été attiré par le CNC (Consensual non-consent) ?", punish: "2 gorgées obligatoires" },
+          { text: "Vous êtes-vous déjà masturbé dans une voiture ?", punish: "2 gorgées obligatoires" },
+          { text: "Vous êtes-vous déjà masturbé en public ?", punish: "2 gorgées obligatoires" },
+          { text: "Vous êtes-vous déjà masturbé devant un animal ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà utilisé un plug anal, sur toi ou sur quelqu'un d'autre ?", punish: "2 gorgées obligatoires" },
+          { text: "Vous êtes-vous déjà masturbé dans la cuisine ?", punish: "2 gorgées obligatoires" },
+          { text: "Vous êtes-vous déjà masturbé dans les toilettes ?", punish: "2 gorgées obligatoires" },
+          { text: "Vous êtes-vous déjà masturbé dans un avion ?", punish: "2 gorgées obligatoires" },
+          { text: "Es-tu déjà allé en publique sans sous-vêtements ?", punish: "2 gorgées obligatoires" },
+          { text: "Pourrais-tu avoir un rapport sexuel dans une forêt ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà commis un rapport sexuel dans une forêt ?", punish: "2 gorgées obligatoires" },
+          { text: "Vous êtes-vous déjà masturbé en pensant à quelqu'un dans cette pièce ?", punish: "2 gorgées obligatoires" },
           { text: "Vous êtes-vous déjà fait surprendre en train de vous masturber ? Si oui par qui ?", punish: "2 gorgées" },
           { text: "Vous êtes-vous déjà fait surprendre en train d'avoir un rapport sexuel ? Si oui par qui ?", punish: "2 gorgées" },
-          { text: "Vous êtes-vous déjà masturbé en ayant vos règles ou avez vous déjà été impliqué dans un rapport qui les incluait ?", punish: "2 gorgées" },
-          { text: "Avez-vous un kink sur boire du sang ?", punish: "2 gorgées" },
-          { text: "Avez-vous un kink pour le sang ?", punish: "2 gorgées" },
-          { text: "Avez-vous un fétichisme des pieds ?", punish: "2 gorgées" },
-          { text: "Avez-vous un kink des furry ?", punish: "2 gorgées" },
-          { text: "Vous êtes-vous déjà masturbé devant quelqu'un qui ne faisait rien d'autre que vous regarder ?", punish: "2 gorgées" },
-          { text: "Vous êtes-vous déjà masturbé devant quelqu'un sans que la personne ne le sache ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà embrassé directement votre partenaire après du sexe oral ?", punish: "2 gorgées" },
+          { text: "Vous êtes-vous déjà masturbé en ayant vos règles ou avez vous déjà été impliqué dans un rapport qui les incluait ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous un kink sur boire du sang ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous un kink pour le sang ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous un fétichisme des pieds ?", punish: "2 gorgées obligaoires" },
+          { text: "Avez-vous un kink des furry ?", punish: "2 gorgées obligatoires" },
+          { text: "Vous êtes-vous déjà masturbé devant quelqu'un qui ne faisait rien d'autre que vous regarder ?", punish: "2 gorgées obligatoires" },
+          { text: "Vous êtes-vous déjà masturbé devant quelqu'un sans que la personne ne le sache ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà embrassé directement votre partenaire après du sexe oral ?", punish: "2 gorgées obligatoires" },
           { text: "Si vous deviez choisir quelqu'un dans cette pièce pour une partie de jambes en l'air, qui serait-ce ?", punish: "2 gorgées" },
           { text: "Si vous deviez choisir quelqu'un dans cette pièce pour une partie de jambes en l'air, qui serait-ce ?", punish: "2 gorgées" },
           { text: "Si vous deviez choisir trois dans cette pièce pour un threesome, qui serait-ce ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà fantasmé sur avaler des fluides de votre partenaire ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà fantasmé sur des parties du corps de votre partenaire autre que les parties intimes et la poitrine ?", punish: "2 gorgées" },
-          { text: "Quelle est votre position sexuelle préférée ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà trompé ou été trompé ?", punish: "2 gorgées" },
-          { text: "Quelles seraient tes règles pour une relation ouverte ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà espionné un ex sur les réseaux ?", punish: "2 gorgées" },
-          { text: "Auriez-vous date votre crush d'école aujourd'hui ?", punish: "2 gorgées" },
-          { text: "Est-ce qu'il y a des secrets que vous ne diriez pas à votre partenaire ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà surpris des personnes en train d'avoir un rapport sexuel ?", punish: "2 gorgées" },
-          { text: "Quelle est la partie du corps que tu préfères chez un partenaire ?", punish: "2 gorgées" },
-          { text: "Possédez-vous des menottes ?", punish: "2 gorgées" },
-          { text: "Tu préfères avoir une relation avec une personne qui a un corps parfait mais un visage peu attrayant ou l'inverse ?", punish: "2 gorgées" },
-          { text: "Qui dans cette pièce a l'énergie la plus dominante ?", punish: "2 gorgées" },
-          { text: "Es-tu plutôt dominant.e ou soumis.e ?", punish: "2 gorgées" },
-          { text: "Qualifie les performances au lit de {{other}} en un mot.", punish: "2 gorgées" },
-          { text: "Qualifie la vie sexuelle de {{other}} en un mot.", punish: "2 gorgées" },
+          { text: "Avez-vous déjà fantasmé sur avaler des fluides de votre partenaire ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà fantasmé sur des parties du corps de votre partenaire autre que les parties intimes et la poitrine ?", punish: "2 gorgées obligatoires" },
+          { text: "Quelle est votre position sexuelle préférée ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà trompé ou été trompé ?", punish: "2 gorgées obligatoires" },
+          { text: "Quelles seraient tes règles pour une relation ouverte ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà espionné un ex sur les réseaux ?", punish: "2 gorgées obligatoires" },
+          { text: "Auriez-vous date votre crush d'école aujourd'hui ?", punish: "2 gorgées obligatoires" },
+          { text: "Est-ce qu'il y a des secrets que vous ne diriez pas à votre partenaire ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà surpris des personnes en train d'avoir un rapport sexuel ?", punish: "2 gorgées obligatoires" },
+          { text: "Quelle est la partie du corps que tu préfères chez un partenaire ?", punish: "2 gorgées obligatoires" },
+          { text: "Possédez-vous des menottes ?", punish: "2 gorgées obligatoires" },
+          { text: "Tu préfères avoir une relation avec une personne qui a un corps parfait mais un visage peu attrayant ou l'inverse ?", punish: "2 gorgées obligatoires" },
+          { text: "Qui dans cette pièce a l'énergie la plus dominante ?", punish: "2 gorgées obligatoires" },
+          { text: "Es-tu plutôt dominant.e ou soumis.e ?", punish: "2 gorgées obligatoires" },
+          { text: "Qualifie les performances au lit de {{other}} en un mot (Tu peux inventer selon la vibe).", punish: "2 gorgées obligatoires" },
+          { text: "Qualifie la vie sexuelle de {{other}} en un mot.", punish: "2 gorgées obligatoires" },
           { text: "Quelle partie du corps de {{other}} préfères-tu ?", punish: "2 gorgées" },
-          { text: "Qui dans cette pièce a l'énergie la plus soumise ?", punish: "2 gorgées" },
-          { text: "Si tu devais être esclave de quelqu'un dans cette pièce pendant 1 heure, qui serait-ce ?", punish: "2 gorgées" },
-          { text: "Qui dans cette pièce laisserais-tu te dominer pendant 1 heure ?", punish: "2 gorgées" },
+          { text: "Qui dans cette pièce a l'énergie la plus soumise ?", punish: "2 gorgées obligatoires" },
+          { text: "Si tu devais être esclave de quelqu'un dans cette pièce (pas toi-même) pendant 1 heure, qui serait-ce ?", punish: "2 gorgées obligatoires" },
+          { text: "Qui dans cette pièce laisserais-tu te dominer pendant 1 heure (Pas toi-même)?", punish: "2 gorgées obligatoires" },
           { text: "Quelle est la personne la plus inapropriée sur qui vous avez fantasmé ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà utilisé de la nourriture pendant un rapport sexuel ?", punish: "2 gorgées" },
-          { text: "Qui pensez-vous a le plus haut body count dans cette pièce ?", punish: "2 gorgées" },
-          { text: "Qui pensez-vous est le meilleur coup dans cette pièce ?", punish: "2 gorgées" },
-          { text: "Regarderiez-vous du porno avec votre partenaire ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà acheté des préservatifs ?", punish: "2 gorgées" },
-          { text: "Etes-vous horny ?", punish: "2 gorgées" },
+          { text: "Avez-vous déjà utilisé de la nourriture pendant un rapport sexuel ?", punish: "2 gorgées obligatoires" },
+          { text: "Qui pensez-vous a le plus haut body count dans cette pièce ?", punish: "2 gorgées obligatoires" },
+          { text: "Qui pensez-vous est le meilleur coup dans cette pièce ?", punish: "2 gorgées obligatoires" },
+          { text: "Regarderiez-vous du porno avec votre partenaire ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà acheté des préservatifs ?", punish: "2 gorgées obligatoires" },
+          { text: "Etes-vous horny ?", punish: "2 gorgées obligatoires" },
           { text: "Combien de sex toys prévus à cet usage possèdes-tu ?", punish: "2 gorgées" },
           { text: "A quel âge as-tu fait ta première fois et avec qui ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà pris une douche à 2 ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà pris un bain à 2 ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà eu un rapport sexuel dans une piscine ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà fini dans la bouche de quelqu'un ou quelqu'un a-t-il déjà fini dans votre bouche ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà utilisé un aliment pour vous masturber ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà utilisé un objet pour vous masturber ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà eu ou commis un suçon ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà menti pour partir d'un date ?", punish: "2 gorgées" },
-          { text: "Vos parties intimes sont-elles rasées ?", punish: "2 gorgées" },
-          { text: "Préférez-vous que votre partenaire se rase les parties intimes ?", punish: "2 gorgées" },
-          { text: "As-tu déjà eu un coup d'un soir (un seul rapport sexuel avec la personne) ?", punish: "2 gorgées" },
-          { text: "Pourrais-tu faire de l'échangisme ?", punish: "2 gorgées" },
-          { text: "T'es-tu déjà regardé te masturber devant un miroir ?", punish: "2 gorgées" },
-          { text: "As-tu déjà eu un rapport avec quelqu'un dont tu as oublié le prénom ?", punish: "2 gorgées" },
-          { text: "Si tu pouvais avoir le sexe opposé, aurais-tu un rapport avec une personne du même sexe que toi ?", punish: "2 gorgées" },
-          { text: "As-tu déjà eu crush sur le/la partenaire d'un.e ami.e ?", punish: "2 gorgées" },
-          { text: "Aimez-vous mordre les gens ?", punish: "2 gorgées" },
-          { text: "Si tout le monde était consentant et que tu devais choisir quelqu'un dans cette pièce avec qui prendre une douche nu.e, qui serait-ce ? Partenaires exclus", punish: "2 gorgées" },
-          { text: "As-tu déjà vu quelqu'un de cette pièce nu ?", punish: "2 gorgées" },
-          { text: "As-tu déjà eu un rapport sexuel avec d'autres personnes que vous dans la même pièce ?", punish: "2 gorgées" },
+          { text: "Avez-vous déjà pris une douche à 2 ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà pris un bain à 2 ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà eu un rapport sexuel dans une piscine ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà fini dans la bouche de quelqu'un ou quelqu'un a-t-il déjà fini dans votre bouche ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà utilisé un aliment pour vous masturber ? Si oui lequel ?", punish: "2 gorgées" },
+          { text: "Avez-vous déjà utilisé un objet pour vous masturber ? Si oui lequel ?", punish: "2 gorgées" },
+          { text: "Avez-vous déjà eu ou commis un suçon ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà menti pour partir d'un date ?", punish: "2 gorgées obligatoires" },
+          { text: "Vos parties intimes sont-elles rasées ?", punish: "2 gorgées obligatoires" },
+          { text: "Préférez-vous que votre partenaire se rase les parties intimes ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà eu un coup d'un soir (un seul rapport sexuel avec la personne) ?", punish: "2 gorgées obligatoires" },
+          { text: "Pourrais-tu faire de l'échangisme ?", punish: "2 gorgées obligatoires" },
+          { text: "T'es-tu déjà regardé te masturber devant un miroir ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà eu un rapport avec quelqu'un dont tu as oublié le prénom ?", punish: "2 gorgées obligatoires" },
+          { text: "Si tu pouvais avoir le sexe opposé, aurais-tu un rapport avec une personne du même sexe que toi ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà eu un crush sur le/la partenaire d'un.e ami.e ?", punish: "2 gorgées obligatoires" },
+          { text: "Aimez-vous mordre les gens ?", punish: "2 gorgées obligatoires" },
+          { text: "Si tout le monde était consentant et que tu devais choisir quelqu'un dans cette pièce avec qui prendre une douche nu.e, qui serait-ce ? Partenaires exclus", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà vu quelqu'un de cette pièce nu ?", punish: "2 gorgées obligatoires" },
           { text: "Raconte comment tu as perdu ta virginité.", punish: "2 gorgées" },
-          { text: "Aimes-tu être nudiste ?", punish: "2 gorgées" },
-          { text: "As-tu déjà eu un rapport ou t'es-tu déjà masturbé en portant un costume.", punish: "2 gorgées" },
+          { text: "Es-tu nudiste (ou penses-tu que tu l'apprécierais) ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà eu un rapport ou t'es-tu déjà masturbé en portant un costume.", punish: "2 gorgées obligatoires" },
           { text: "Quand avez-vous regardé/lu du porno pour la dernière fois ?", punish: "2 gorgées" },
-          { text: "As-tu déjà baigné nu.e ?", punish: "2 gorgées" },
+          { text: "As-tu déjà baigné nu.e ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà goûté du sperme ?", punish: "2 gorgées obligatoires" },
           { text: "Est-ce que la sexualité est plutôt biologique, culturelle, ou un mélange indissociable ?", punish: "2 gorgées obligatoires" },
           { text: "Est-ce que tu penses que l'on peut distinguer nettement désir sexuel et attirance romantique, ou c'est artificiel ?", punish: "2 gorgées obligatoires" },
           { text: "Est-ce que la libido inégale dans un couple est un problème à régler ou une différence à accepter ?", punish: "2 gorgées obligatoires" },
@@ -1133,20 +1236,22 @@
           { text: "Est-ce que le porno influence le désir ou il révèle simplement des fantasmes déjà présents ?", punish: "2 gorgées obligatoires" },
           { text: "Est-ce que l'éducation sexuelle devrait inclure le BDSM, les kinks, et les pratiques non standards ? ?", punish: "2 gorgées obligatoires" },
           { text: "Est-ce que le consentement peut être valable s'il y a un gros déséquilibre de pouvoir (âge, statut, argent) ?", punish: "2 gorgées obligatoires" },
-          { text: "Préfères-tu avoir des rapports sexuels ou te masturber en étant bourré ?", punish: "2 gorgées" },
-          { text: "Pourrais-tu avoir un rapport sexuel avec une personne non binaire ?", punish: "2 gorgées" },
-          { text: "As-tu déjà eu crush sur un.e ami.e proche ?", punish: "2 gorgées" },
-          { text: "Es-tu déjà allé dans un strip club ?", punish: "2 gorgées" },
-          { text: "As-tu déjà fait une sextape ?", punish: "2 gorgées" },
-          { text: "As-tu déjà eu un acte sexuel dans cette pièce ?", punish: "2 gorgées" },
-          { text: "Est-ce que tes parties intimes sont rasées ?", punish: "2 gorgées" },
-          { text: "Cite un ick qui te ferait perdre instantanément toute attirance chez une personne ?", punish: "2 gorgées" },
-          { text: "Avez-vous déjà surpris vos parents au lit ?", punish: "2 gorgées" },
+          { text: "Préfères-tu avoir des rapports sexuels ou te masturber en étant bourré ?", punish: "2 gorgées obligatoires" },
+          { text: "Pourrais-tu avoir un rapport sexuel avec une personne non binaire ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà eu crush sur un.e ami.e proche ?", punish: "2 gorgées obligatoires" },
+          { text: "Es-tu déjà allé dans un strip club ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà avalé ?", punish: "2 gorgées obligatoires" },
+          { text: "T'es-tu déjà étouffé.e pendant une gorge profonde ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà fait une sextape ?", punish: "2 gorgées obligatoires" },
+          { text: "As-tu déjà eu un acte sexuel dans cette pièce ?", punish: "2 gorgées obligatoires" },
+          { text: "Est-ce que tes parties intimes sont rasées ?", punish: "2 gorgées obligatoires" },
+          { text: "Cite un ick qui te ferait perdre instantanément toute attirance chez une personne ?", punish: "2 gorgées obligatoires" },
+          { text: "Avez-vous déjà surpris vos parents au lit ?", punish: "2 gorgées obligatoires" },
           { text: "Quelle est la dernière chose sur laquelle tu t'es masturbé.e ?", punish: "2 gorgées" },
           { text: "Paierais-tu pour voir un rapport sexuel consentant entre certaines personnes de cette pièce ? Si oui qui ?", punish: "3 gorgées" },
-          { text: "As-tu déjà fait un rêve érotique avec {{other}} ?", punish: "3 gorgées" },
+          { text: "As-tu déjà fait un rêve érotique avec {{other}} ?", punish: "2 gorgées obligatoires" },
           { text: "Si tu devais te déshabiller pour quelqu'un de cette pièce, qui serait-ce ? Partenaires exclus.", punish: "3 gorgées" },
-          { text: "Y a-t-il quelqu'un dans cette pièce avec qui tu aurais accepté un rapport sexuel ? Autre que ton.ta partenaire.", punish: "2 gorgées" },
+          { text: "Y a-t-il quelqu'un dans cette pièce avec qui tu aurais accepté un rapport sexuel ? Autre que ton.ta partenaire.", punish: "2 gorgées obligatoires" },
 
         ],
         actions: [
@@ -1161,8 +1266,12 @@
           { text: "Léchez un doigt de votre voisin de droite en le regardant dans les yeux s'iel est consentant.e.", punish: "2 gorgées" },
           { text: "Léchez le long du cou de {{other}}.", punish: "2 gorgées" },
           { text: "Suce quelque chose de manière sexy.", punish: "2 gorgées" },
+          { text: "Roule une pelle à {{other}}", punish: "2 gorgées" },
+          { text: "Roule une pelle à {{other}}", punish: "2 gorgées" },
           { text: "Enlève un vêtement", punish: "2 gorgées" },
           { text: "Enlève un vêtement", punish: "2 gorgées" },
+          { text: "Les autres joueurs décident d'une action et d'une position que tu vas devoir trouver. Les autres joueurs te disent chaud ou froid jusqu'à ce que tu exécutes parfaitement la position et l'action.", punish: "Distribue 5 gorgées si tu réussis à trouver dans les 5 minutes, bois les sinon" },
+          { text: "Agenouille-toi devant {{other}}, iel doit te caresser.", punish: "2 gorgées" },
           { text: "Enlève un vêtement", punish: "2 gorgées" },
           { text: "Montre-nous en image un sex toy que tu n'as jamais essayé mais que tu pourrais vouloir essayer un jour.", punish: "2 gorgées" },
           { text: "Montre ton historique internet, les joueurs ont le droit de chercher 3 mots", punish: "4 gorgées" },
@@ -1188,6 +1297,7 @@
           { text: "Soyez dans le noir, et mets-toi à poils pendant 1 tour", punish: "6 gorgées" },
           { text: "Fais un massage à l'huile à {{other}} pendant 1 tour", punish: "4 gorgées" },
           { text: "Fais un massage crânien à {{other}} pendant 1 tour", punish: "3 gorgées" },
+          { text: "Fais un body shot sur {{other}}.", punish: "3 gorgées" },
           { text: "Fais un massage crânien à {{other}} pendant 1 tour", punish: "3 gorgées" },
           { text: "Montre-nous le dernier porno que tu as vu", punish: "4 gorgées" },
           { text: "Embrasse quelqu'un du même sexe que toi sur la bouche.", punish: "2 gorgées" },
@@ -1205,6 +1315,9 @@
           { text: "Obéis à {{other}} pendant les 10 prochaines minutes.", punish: "2 gorgées" },
           { text: "Mets ta main dans la poche de {{other}} jusqu'à votre tour.", punish: "2 gorgées" },
           { text: "Bois un verre d'eau.", punish: "Il y en a pas" },
+          { text: "De 1 à 10, note comment tu imaginerais une relation sexuelle avec toi et chaque joueur.", punish: "3 gorgées obligatoires" },
+          { text: "De 1 à 10, note comment tu imagines les performances sexuelles de chaque joueur.", punish: "3 gorgées obligatoires" },
+          { text: "De 1 à 10, note comment tu imagines la dominance sexuelle de chaque joueur (1 étant soumis).", punish: "Les joueurs boivent le nombre en gorgées, et toi tu en bois 5" },
           { text: "Prends-toi une fessée par {{other}}.", punish: "3 gorgées" },
           { text: "Bois un verre d'eau.", punish: "Si si, bois un verre d'eau" },
           { text: "Fais un câlin à {{other}}.", punish: "2 gorgées " },
@@ -1217,13 +1330,15 @@
         ],
         community: [
           { text: "À tour de rôle, révélez un fantasme", punish: "1 gorgée" },
-          { text: "À tour de rôle, révélez la dernière fois que vous vous êtes masturbé", punish: "1 shot pour le plus récent" },
-          { text: "À tour de rôle, révélez la dernière fois que vous avez eu un rapport sexuel avec une autre personne.", punish: "1 shot  pour le plus récent" },
+          { text: "À tour de rôle, révélez la dernière fois que vous vous êtes masturbé", punish: "3 gorgées pour le plus récent" },
+          { text: "À tour de rôle, révélez la dernière fois que vous avez eu un rapport sexuel avec une autre personne.", punish: "3 gorgées  pour le plus récent" },
           { text: "Pouces : Si vous aimez les Femmes, pouce vers le haut, si vous aimez les Hommes, pouce vers le bas, le reste distribue 2 gorgées", punish: "La majorité distribue 2 gorgées chacun" },
           { text: "Pouces : Si vous êtes hétéros, pouce vers le haut, si vous êtes ne l'êtes pas, pouce vers le bas.", punish: "La majorité distribue 2 gorgées chacun" },
           { text: "Pouces : Si vous êtes dominants, pouce vers le haut, si vous êtes soumis, pouce vers le bas. Si vous êtes verse, choisissez.", punish: "La majorité distribue 2 gorgées chacun" },
           { text: "Pouces : Si vous êtes horny, pouce vers le haut, si vous êtes pas horny, pouce vers le bas.", punish: "La majorité distribue 2 gorgées chacun" },
           { text: "Pouces : Si vous aimez le sexe oral, pouce vers le haut, sinon, pouce vers le bas.", punish: "La majorité distribue 2 gorgées chacun" },
+          { text: "Pouces : Si vous préférez commettre un acte sexuel de 15 minutes devant un groupe de 5 inconnus respectueux, pouce vers le haut, si vous préférez commettre un acte sexuel en live pendant 1h sans que l'on vous reconnaisse, pouce vers le bas.", punish: "La majorité distribue 2 gorgées chacun" },
+          { text: "Pouces : Si vous préférez les rapports de 10 minutes, pouce vers le haut, si vous préférez les rapports de 1 heure, pouce vers le bas.", punish: "La minorité boit 2 gorgées chacun" },
           { text: "Buvez pour le nombre de personnes dans cette pièce avec qui vous pourriez avoir une relation sexuelle (si l'orientation sexuelle correspondait).", punish: "2 gorgées" },
           { text: "Pouces : Si vous préférez embrasser sans la langue, pouce vers le haut, si vous préférez avec, pouce vers le bas.", punish: "la majorité distribue 2 gorgées" },
           { text: "Je n'ai jamais eu de plan cul.", punish: "2 gorgées pour ceux qui en ont eu" },
@@ -1233,6 +1348,7 @@
           { text: "Ceux qui arrivent à lécher leurs tétons distribuent 3 gorgées chacun.", punish: "Ceux qui le prouvent en distribuent 6." },
           { text: "Je ne me suis jamais fait circoncire.", punish: "2 gorgées si oui" },
           { text: "Je n'ai jamais porté de stérilet.", punish: "2 gorgées si oui" },
+          { text: "Pouces : Pouce en haut pour le sexe tendre et sentimental, pouce en bas pour le sexe hard et puissant.", punish: "2 gorgées pour les minoritaires" },
           { text: "Je n'ai jamais eu de relations sexuelles avec 2 personnes différentes ou plus dans la même semaine.", punish: "2 gorgées si oui" },
           { text: "Buvez le nombre de gorgées que vous avez eu de rêves érotiques avec des personnes différentes dans cette pièce ?", punish: "5 gorgées si tu veux pas dire" },
           { text: "Tout le monde ferme les yeux, tourne sa tête vers quelqu'un, et les ouvre.", punish: "1 shot chacun si deux personnes se regardent" },
@@ -1241,29 +1357,29 @@
           { text: "Fouettez chacun le cul de votre voisin de gauche 1x avec une ceinture en comptant en allemand.", punish: "4 gorgées" },
           { text: "Pendant les deux prochains tours, interdiction de boire de la main dominante.", punish: "4 gorgées si quelqu'un échoue" },
           { text: "Qui est le plus susceptible de frapper son partenaire ou d'être frappé par son partenaire ?", punish: "4 gorgées si quelqu'un échoue" },
-          { text: "Qui est le plus susceptible d'avoir un rapport sexuel avec {{other}} ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'avoir un rapport sexuel avec {{other}} ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'augmenter son body count ce soir ?", punish: "Le perdant boit 1 shot" },
+          { text: "Qui est le plus susceptible d'avoir un rapport sexuel avec {{other}} ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'avoir un rapport sexuel avec {{other}} ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'augmenter son body count ce soir ?", punish: "Le perdant boit 3 gorgées" },
           { text: "Tout le monde boit 10 gorgées.", punish: "Moins une gorgée par body count." },
-          { text: "Qui est le plus susceptible de se masturber ce soir ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'avoir un kink sur MLP ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de se faire voir en publique pendant un acte sexuel ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'avoir des MST ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de finir en plan à 3 à une soirée ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de cacher ses kinks ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'avoir une relation sexuelle pour son voisin de droite ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'avoir une relation sexuelle pour son voisin de gauche ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'être ", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'avoir des MST ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de s'endormir le plus vite ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de draguer ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'avoir un penchant pour l'inceste ?", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible d'avoir un penchant pour les furry ?", punish: "Le perdant boit 1 shot" },
-          { text: "Pendant 1 tour, doublez les punitions.", punish: "Le perdant boit 1 shot" },
-          { text: "Qui est le plus susceptible de finir nu à une soirée ?", punish: "Le perdant boit 1 shot" },
+          { text: "Qui est le plus susceptible de se masturber ce soir ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'avoir un kink sur MLP ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de se faire voir en publique pendant un acte sexuel ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'avoir des MST ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de finir en plan à 3 à une soirée ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de cacher ses kinks ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'avoir une relation sexuelle pour son voisin de droite ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'avoir une relation sexuelle pour son voisin de gauche ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'être ", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'avoir des MST ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de s'endormir le plus vite ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de draguer ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'avoir un penchant pour l'inceste ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible d'avoir un penchant pour les furry ?", punish: "Le perdant boit 3 gorgées" },
+          { text: "Pendant 1 tour, doublez les punitions.", punish: "Le perdant boit 3 gorgées" },
+          { text: "Qui est le plus susceptible de finir nu à une soirée ?", punish: "Le perdant boit 3 gorgées" },
           { text: "Pouces : Si vous préférez les sextos, pouce vers le haut, si vous préférez le dirty talk, pouce vers le bas.", punish: "La minorité boit 2 gorgées" },
           { text: "Shot général.", punish: "3 gorgées" },
-  ]
+        ]
       }
     };
 
@@ -1332,17 +1448,20 @@
 
     function startTurn(){
       // Si la prochaine “question” est une Communauté, on l’affiche tout de suite
-      if(((state.questionCount + 1) % 10) === 0){
+      if(((state.questionCount + 1) % 5) === 0){
         state.currentPlayer = null;
         state.currentPromptType = "community";
 
         const item = drawPrompt("community");
         $("promptType").textContent = "👥 Communauté";
+        $("promptType").classList.remove("truth", "action", "community");
+        $("promptType").classList.add("community");
         $("whoChip").textContent = "Pour tout le monde";
         $("promptText").textContent = renderTemplate(item.text);
         $("punishText").textContent = "Punition : " + item.punish;
 
         state.questionCount += 1;
+        timerReset();
         show("screen-prompt");
         return;
       }
@@ -1376,7 +1495,40 @@
         .replaceAll("{{other}}", otherName);
     }
 
+    // ===== Chrono =====
+    let timerSeconds = 0;
+    let timerInterval = null;
 
+    function formatTime(sec){
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+    }
+
+    function updateTimerUI(){
+      const el = $("timerDisplay");
+      if(el) el.textContent = formatTime(timerSeconds);
+    }
+
+    function timerStart(){
+      if(timerInterval !== null) return; // déjà en marche
+      timerInterval = setInterval(() => {
+        timerSeconds += 1;
+        updateTimerUI();
+      }, 1000);
+    }
+
+    function timerStop(){
+      if(timerInterval === null) return;
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+
+    function timerReset(){
+      timerStop();
+      timerSeconds = 0;
+      updateTimerUI();
+    }
 
 
     function getPool(type){
@@ -1540,6 +1692,8 @@
       const item = drawPrompt(type);
 
       $("promptType").textContent = (type === "truth") ? "🗣️ Vérité" : "🎯 Action";
+      $("promptType").classList.remove("truth", "action", "community");
+      $("promptType").classList.add(type);
       $("whoChip").textContent = state.currentPlayer ? `Pour ${state.currentPlayer.name}` : "—";
 
       $("promptText").textContent = renderTemplate(item.text);
@@ -1547,6 +1701,7 @@
 
       state.questionCount += 1;
       updateChoiceButtons();
+      timerReset();
       show("screen-prompt");
     }
 
@@ -1568,6 +1723,9 @@
       startTurn();
     });
 
+    $("timerStartBtn").addEventListener("click", timerStart);
+    $("timerStopBtn").addEventListener("click", timerStop);
+    $("timerResetBtn").addEventListener("click", timerReset);
 
     // init
     updateChips();
