@@ -28,6 +28,8 @@
         linear-gradient(180deg, var(--bg0), var(--bg1));
     }
 
+    .hidden{ display:none !important; }
+
     .app{
       min-height:100%;
       display:flex;
@@ -445,11 +447,11 @@
             <button class="btn" id="nextTurnBtn">Tour suivant →</button>
           </div>
                   <div class="timer">
-          <div class="timer-display" id="timerDisplay">00:00</div>
+          <div class="timer-display" id="timerDisplay">00:00:00</div>
           <div class="timer-controls">
             <button class="btn primary" id="timerStartBtn">▶ Démarrer</button>
-            <button class="btn danger" id="timerStopBtn">⏸ Stop</button>
-            <button class="btn" id="timerResetBtn">↺ Reset</button>
+            <button class="btn danger hidden" id="timerStopBtn">⏸ Stop</button>
+            <button class="btn hidden" id="timerResetBtn">↺ Reset</button>
           </div>
         </div>
         </div>
@@ -1495,39 +1497,115 @@
         .replaceAll("{{other}}", otherName);
     }
 
-    // ===== Chrono =====
-    let timerSeconds = 0;
-    let timerInterval = null;
+    // ===== Chrono (mm:ss:cc) + UI Start/Stop/Continue/Reset =====
+    let timerState = "idle";   // "idle" | "running" | "paused"
+    let timerRunning = false;
+    let timerStartTs = 0;      // performance.now() au démarrage
+    let timerElapsedMs = 0;    // temps accumulé quand on stop
+    let timerRafId = null;
 
-    function formatTime(sec){
-      const m = Math.floor(sec / 60);
-      const s = sec % 60;
-      return String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+    function formatTimeMs(ms){
+      const totalCs = Math.floor(ms / 10);   // centièmes
+      const minutes = Math.floor(totalCs / 6000);
+      const seconds = Math.floor((totalCs % 6000) / 100);
+      const centis  = totalCs % 100;
+
+      return (
+        String(minutes).padStart(2, "0") + ":" +
+        String(seconds).padStart(2, "0") + ":" +
+        String(centis).padStart(2, "0")
+      );
+    }
+
+    function timerGetMs(){
+      return timerRunning
+        ? (timerElapsedMs + (performance.now() - timerStartTs))
+        : timerElapsedMs;
     }
 
     function updateTimerUI(){
       const el = $("timerDisplay");
-      if(el) el.textContent = formatTime(timerSeconds);
+      if(!el) return;
+      el.textContent = formatTimeMs(timerGetMs());
+    }
+
+    function timerLoop(){
+      if(!timerRunning) return;
+      updateTimerUI();
+      timerRafId = requestAnimationFrame(timerLoop);
+    }
+
+    function setTimerUiState(next){
+      timerState = next;
+
+      const startBtn = $("timerStartBtn");
+      const stopBtn  = $("timerStopBtn");
+      const resetBtn = $("timerResetBtn");
+
+      if(next === "idle"){
+        startBtn.classList.remove("hidden");
+        stopBtn.classList.add("hidden");
+        resetBtn.classList.add("hidden");
+        stopBtn.textContent = "⏸ Stop";
+      }
+
+      if(next === "running"){
+        startBtn.classList.add("hidden");
+        stopBtn.classList.remove("hidden");
+        resetBtn.classList.remove("hidden");
+        stopBtn.textContent = "⏸ Stop";
+      }
+
+      if(next === "paused"){
+        startBtn.classList.add("hidden");
+        stopBtn.classList.remove("hidden");
+        resetBtn.classList.remove("hidden");
+        stopBtn.textContent = "▶ Continuer";
+      }
     }
 
     function timerStart(){
-      if(timerInterval !== null) return; // déjà en marche
-      timerInterval = setInterval(() => {
-        timerSeconds += 1;
-        updateTimerUI();
-      }, 1000);
+      if(timerRunning) return;
+      timerRunning = true;
+      timerStartTs = performance.now();
+      timerRafId = requestAnimationFrame(timerLoop);
     }
 
     function timerStop(){
-      if(timerInterval === null) return;
-      clearInterval(timerInterval);
-      timerInterval = null;
+      if(!timerRunning) return;
+      timerElapsedMs += (performance.now() - timerStartTs);
+      timerRunning = false;
+      if(timerRafId) cancelAnimationFrame(timerRafId);
+      timerRafId = null;
+      updateTimerUI();
     }
 
     function timerReset(){
-      timerStop();
-      timerSeconds = 0;
+      timerRunning = false;
+      if(timerRafId) cancelAnimationFrame(timerRafId);
+      timerRafId = null;
+      timerElapsedMs = 0;
+      timerStartTs = 0;
       updateTimerUI();
+      setTimerUiState("idle");
+    }
+
+    // Click handlers
+    function onTimerStartClick(){
+      // depuis idle uniquement
+      timerReset();           // repart à 0
+      timerStart();
+      setTimerUiState("running");
+    }
+
+    function onTimerStopOrContinueClick(){
+      if(timerState === "running"){
+        timerStop();
+        setTimerUiState("paused");
+      }else if(timerState === "paused"){
+        timerStart();
+        setTimerUiState("running");
+      }
     }
 
 
@@ -1723,8 +1801,8 @@
       startTurn();
     });
 
-    $("timerStartBtn").addEventListener("click", timerStart);
-    $("timerStopBtn").addEventListener("click", timerStop);
+    $("timerStartBtn").addEventListener("click", onTimerStartClick);
+    $("timerStopBtn").addEventListener("click", onTimerStopOrContinueClick);
     $("timerResetBtn").addEventListener("click", timerReset);
 
     // init
