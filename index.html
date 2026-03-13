@@ -1394,6 +1394,7 @@
     const state = {
       level: null,
       players: [],
+      turnBag: [],
       currentPlayer: null,
       used: { truth: new Set(), action: new Set(), community: new Set() }, questionCount: 0,
 
@@ -1421,6 +1422,28 @@
 
     function pickRandom(arr){
       return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function refillTurnBag(){
+      // on met tous les joueurs dans le sac
+      state.turnBag = [...state.players];
+    }
+
+    function pickNextPlayerFair(){
+      if(state.players.length === 0) return null;
+      if(state.players.length === 1) return state.players[0];
+
+      // si sac vide (ou incohérent), on le remplit
+      if(!state.turnBag || state.turnBag.length === 0){
+        refillTurnBag();
+      }
+
+      // tire un joueur du sac (sans remise)
+      const idx = Math.floor(Math.random() * state.turnBag.length);
+      const p = state.turnBag[idx];
+      state.turnBag.splice(idx, 1);
+
+      return p;
     }
 
     function pickNextPlayer(){
@@ -1472,7 +1495,7 @@
       }
 
       // Sinon, tour normal : on choisit un joueur et on demande Vérité/Action
-      state.currentPlayer = pickNextPlayer();
+      state.currentPlayer = pickNextPlayerFair();
       $("currentPlayerName").textContent =
         state.currentPlayer ? state.currentPlayer.name : "—";
 
@@ -1671,7 +1694,11 @@
       [...list.querySelectorAll("[data-remove]")].forEach(btn => {
         btn.addEventListener("click", () => {
           const idx = Number(btn.getAttribute("data-remove"));
+          const removed = state.players[idx];
           state.players.splice(idx, 1);
+
+          // enlève aussi du sac si elle y était
+          state.turnBag = state.turnBag.filter(p => p !== removed);
           updateChips();
           renderPlayers();
         });
@@ -1698,6 +1725,8 @@
         state.used.action.clear();
         state.used.community.clear();
         state.questionCount = 0;
+        state.turnBag = [];
+        state.currentPromptType = null;
         updateChips();
         show("screen-players");
         $("playerInput").focus();
@@ -1726,6 +1755,11 @@
         name,
         truthStreak: 0
       });
+
+      // si un cycle est en cours (turnBag non vide), on ajoute le nouveau joueur au sac
+      if(state.turnBag && state.turnBag.length > 0){
+        state.turnBag.push(state.players[state.players.length - 1]);
+      }
 
 
       $("playerInput").value = "";
@@ -1766,6 +1800,8 @@
       state.lastPlayer = null;
       state.used.community.clear();
       state.questionCount = 0;
+      state.turnBag = [];
+      state.currentPromptType = null;
       updateChips();
       renderPlayers();
       show("screen-levels");
