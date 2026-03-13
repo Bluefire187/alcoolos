@@ -1433,15 +1433,29 @@
       if(state.players.length === 0) return null;
       if(state.players.length === 1) return state.players[0];
 
+      let justRefilled = false;
+
       // si sac vide (ou incohérent), on le remplit
       if(!state.turnBag || state.turnBag.length === 0){
         refillTurnBag();
+        justRefilled = true;
       }
 
       // tire un joueur du sac (sans remise)
-      const idx = Math.floor(Math.random() * state.turnBag.length);
+      let idx = Math.floor(Math.random() * state.turnBag.length);
+
+      // Si on vient de refill, évite que le 1er du nouveau cycle soit le dernier du cycle précédent
+      if(justRefilled && state.lastPlayer && state.turnBag.length > 1){
+        while(state.turnBag[idx] === state.lastPlayer){
+          idx = Math.floor(Math.random() * state.turnBag.length);
+        }
+      }
+
       const p = state.turnBag[idx];
       state.turnBag.splice(idx, 1);
+
+      // mémorise le dernier joueur tiré
+      state.lastPlayer = p;
 
       return p;
     }
@@ -1726,6 +1740,7 @@
         state.used.community.clear();
         state.questionCount = 0;
         state.turnBag = [];
+        state.lastPlayer = null;
         state.currentPromptType = null;
         updateChips();
         show("screen-players");
