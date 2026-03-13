@@ -231,6 +231,9 @@
       font-weight:850;
       margin:8px 0 6px;
     }
+
+    .prompt-text a { color: #4dabff; text-decoration: underline; }
+    
     .muted{ color:var(--muted); }
 
     .choice-grid{
@@ -1459,7 +1462,7 @@
         $("promptType").classList.remove("truth", "action", "community");
         $("promptType").classList.add("community");
         $("whoChip").textContent = "Pour tout le monde";
-        $("promptText").textContent = renderTemplate(item.text);
+        $("promptText").innerHTML = renderPromptHtml(item.text);
         $("punishText").textContent = "Punition : " + item.punish;
 
         state.questionCount += 1;
@@ -1495,6 +1498,18 @@
       return text
         .replaceAll("{{player}}", playerName)
         .replaceAll("{{other}}", otherName);
+    }
+
+    function renderPromptHtml(rawText){
+      const templated = renderTemplate(rawText);
+      let s = escapeHtml(templated);
+
+      // transforme les URLs "nues" en liens cliquables
+      s = s.replace(/(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/g, (url) => {
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+      });
+
+      return s;
     }
 
     // ===== Chrono (mm:ss:cc) + UI Start/Stop/Continue/Reset =====
@@ -1774,7 +1789,7 @@
       $("promptType").classList.add(type);
       $("whoChip").textContent = state.currentPlayer ? `Pour ${state.currentPlayer.name}` : "—";
 
-      $("promptText").textContent = renderTemplate(item.text);
+      $("promptText").innerHTML = renderPromptHtml(item.text);
       $("punishText").textContent = "Punition : " + item.punish;
 
       state.questionCount += 1;
@@ -1792,7 +1807,7 @@
 
       const item = drawPrompt(state.currentPromptType);
 
-      $("promptText").textContent = renderTemplate(item.text);
+      $("promptText").innerHTML = renderPromptHtml(item.text);
       $("punishText").textContent = "Punition : " + item.punish;
     });
 
